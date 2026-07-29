@@ -158,7 +158,6 @@ header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 8
   display:flex; 
   justify-content:space-between; 
   pointer-events:none;
-  padding:0 7px; /* ← ДОБАВЛЕНО: отступы по краям */
 }
 
 .sp-marker { 
@@ -168,7 +167,7 @@ header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 8
   display:flex; 
   align-items:center; 
   justify-content:center;
-  flex-shrink:0; /* ← ДОБАВЛЕНО: чтобы маркеры не сжимались */
+  flex-shrink:0;
 }
 
 .sp-marker::before { 
@@ -181,6 +180,8 @@ header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 8
   border:3px solid rgba(44,62,80,.15); 
   transition:all .4s var(--ease); 
   z-index:2; 
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .sp-marker.done::before { 
@@ -213,28 +214,34 @@ header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 8
   font-weight:600; 
   color:#7C8894; 
   text-align:center; 
-  width:120%; 
+  width:140px; /* Чуть увеличили ширину блока текста, чтобы он точно влезал */
 }
 
-.sp-marker:first-child {
-  margin-left: -50px; /* ← ДОБАВЛЕНО: сдвиг первого маркера влево */
+/* === СДВИГАЕМ ТОЛЬКО ТОЧКУ ПЕРВОГО МАРКЕРА ВЛЕВО === */
+.sp-marker:first-child::before {
+  left: 0;
+  transform: translateX(-50%);
 }
 
+/* Текст первого маркера прижат влево, но начинается от края (не вылезает) */
 .sp-marker:first-child .sp-marker-label { 
-  left:0; 
-  transform:translateX(0); 
-  text-align:left; 
+  left: 0; 
+  transform: translateX(0); 
+  text-align: left; 
 }
 
-.sp-marker:last-child {
-  margin-right: -50px; /* ← ДОБАВЛЕНО: сдвиг последнего маркера вправо */
+/* === СДВИГАЕМ ТОЛЬКО ТОЧКУ ПОСЛЕДНЕГО МАРКЕРА ВПРАВО === */
+.sp-marker:last-child::before {
+  left: 100%;
+  transform: translateX(-50%);
 }
 
+/* Текст последнего маркера прижат вправо, но заканчивается у края (не вылезает) */
 .sp-marker:last-child .sp-marker-label { 
-  left:auto; 
-  right:0; 
-  transform:translateX(0); 
-  text-align:right; 
+  left: auto; 
+  right: 0; 
+  transform: translateX(0); 
+  text-align: right; 
 }
 
 .sp-marker.current .sp-marker-label { 
