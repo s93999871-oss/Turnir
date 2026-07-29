@@ -149,20 +149,102 @@ header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 8
 .sp-progress-text { font-family:var(--font-head); font-weight:800; color:var(--eos-red); font-size:1.1rem; font-variant-numeric:tabular-nums; }
 .sp-bar-wrap { position:relative; height:12px; border-radius:12px; background:rgba(44,62,80,.08); overflow:visible; margin:30px 0 14px; }
 .sp-bar { height:100%; border-radius:12px; background:linear-gradient(90deg,var(--eos-dark-red),var(--eos-red)); transition:width 1.2s var(--ease); }
-.sp-markers { position:absolute; top:50%; left:0; right:0; transform:translateY(-50%); display:flex; justify-content:space-between; pointer-events:none; }
-.sp-marker { position:relative; width:100px; height:28px; display:flex; align-items:center; justify-content:center; }
-.sp-marker::before { content:''; position:absolute; width:14px; height:14px; border-radius:50%; background:var(--white);
-  border:3px solid rgba(44,62,80,.15); transition:all .4s var(--ease); z-index:2; }
-.sp-marker.done::before { background:var(--eos-red); border-color:var(--eos-red); box-shadow:0 0 0 4px rgba(227,6,19,.15); }
-.sp-marker.current::before { background:var(--white); border-color:var(--eos-red); border-width:3px;
-  box-shadow:0 0 0 4px rgba(227,6,19,.25); animation:pulseMarker 2s var(--ease) infinite; }
-@keyframes pulseMarker { 0%,100%{box-shadow:0 0 0 4px rgba(227,6,19,.25);} 50%{box-shadow:0 0 0 8px rgba(227,6,19,0);} }
-.sp-marker-label { position:absolute; top:22px; left:50%; transform:translateX(-50%); white-space:nowrap;
-  font-family:var(--font-head); font-size:.68rem; font-weight:600; color:#7C8894; text-align:center; width:120%; }
-.sp-marker:first-child .sp-marker-label { left:0; transform:translateX(0); text-align:left; }
-.sp-marker:last-child .sp-marker-label { left:auto; right:0; transform:translateX(0); text-align:right; }
-.sp-marker.current .sp-marker-label { color:var(--eos-red); font-weight:700; }
-.sp-marker.done .sp-marker-label { color:var(--green); }
+.sp-markers { 
+  position:absolute; 
+  top:50%; 
+  left:0; 
+  right:0; 
+  transform:translateY(-50%); 
+  display:flex; 
+  justify-content:space-between; 
+  pointer-events:none;
+  padding:0 7px; /* ← ДОБАВЛЕНО: отступы по краям */
+}
+
+.sp-marker { 
+  position:relative; 
+  width:100px; 
+  height:28px; 
+  display:flex; 
+  align-items:center; 
+  justify-content:center;
+  flex-shrink:0; /* ← ДОБАВЛЕНО: чтобы маркеры не сжимались */
+}
+
+.sp-marker::before { 
+  content:''; 
+  position:absolute; 
+  width:14px; 
+  height:14px; 
+  border-radius:50%; 
+  background:var(--white);
+  border:3px solid rgba(44,62,80,.15); 
+  transition:all .4s var(--ease); 
+  z-index:2; 
+}
+
+.sp-marker.done::before { 
+  background:var(--eos-red); 
+  border-color:var(--eos-red); 
+  box-shadow:0 0 0 4px rgba(227,6,19,.15); 
+}
+
+.sp-marker.current::before { 
+  background:var(--white); 
+  border-color:var(--eos-red); 
+  border-width:3px;
+  box-shadow:0 0 0 4px rgba(227,6,19,.25); 
+  animation:pulseMarker 2s var(--ease) infinite; 
+}
+
+@keyframes pulseMarker { 
+  0%,100%{box-shadow:0 0 0 4px rgba(227,6,19,.25);} 
+  50%{box-shadow:0 0 0 8px rgba(227,6,19,0);} 
+}
+
+.sp-marker-label { 
+  position:absolute; 
+  top:22px; 
+  left:50%; 
+  transform:translateX(-50%); 
+  white-space:nowrap;
+  font-family:var(--font-head); 
+  font-size:.68rem; 
+  font-weight:600; 
+  color:#7C8894; 
+  text-align:center; 
+  width:120%; 
+}
+
+.sp-marker:first-child {
+  margin-left: -50px; /* ← ДОБАВЛЕНО: сдвиг первого маркера влево */
+}
+
+.sp-marker:first-child .sp-marker-label { 
+  left:0; 
+  transform:translateX(0); 
+  text-align:left; 
+}
+
+.sp-marker:last-child {
+  margin-right: -50px; /* ← ДОБАВЛЕНО: сдвиг последнего маркера вправо */
+}
+
+.sp-marker:last-child .sp-marker-label { 
+  left:auto; 
+  right:0; 
+  transform:translateX(0); 
+  text-align:right; 
+}
+
+.sp-marker.current .sp-marker-label { 
+  color:var(--eos-red); 
+  font-weight:700; 
+}
+
+.sp-marker.done .sp-marker-label { 
+  color:var(--green); 
+}
 .sp-stage-info { text-align:center; padding:14px 20px; margin-top:22px; border-radius:14px;
   background:linear-gradient(120deg,rgba(227,6,19,.06),rgba(183,28,28,.02)); border:1px solid rgba(227,6,19,.12); }
 .sp-stage-label { font-family:var(--font-head); font-size:.72rem; font-weight:600; letter-spacing:.18em;
