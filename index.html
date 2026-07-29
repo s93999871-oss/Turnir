@@ -161,6 +161,41 @@ header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 8
 .as-stat { font-size:.86rem; font-weight:600; color:#7C8894; }
 .as-stat b { display:block; font-family:var(--font-head); font-size:1.15rem; color:var(--text); margin-bottom:2px; }
 
+  /* ПУТЬ СЕЗОНА */
+.season-path { padding:30px; margin-bottom:30px; border-radius:var(--radius); background:var(--white);
+  border:1px solid rgba(44,62,80,.07); box-shadow:var(--shadow-sm); animation:cardIn .6s var(--ease) both; }
+.sp-top { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:18px; }
+.sp-title { font-family:var(--font-head); font-weight:700; font-size:1.1rem; }
+.sp-progress-text { font-family:var(--font-head); font-weight:800; color:var(--eos-red); font-size:1.1rem; font-variant-numeric:tabular-nums; }
+.sp-bar-wrap { position:relative; height:12px; border-radius:12px; background:rgba(44,62,80,.08); overflow:visible; margin:30px 0 14px; }
+.sp-bar { height:100%; border-radius:12px; background:linear-gradient(90deg,var(--eos-dark-red),var(--eos-red)); transition:width 1.2s var(--ease); }
+.sp-markers { position:absolute; top:50%; left:0; right:0; transform:translateY(-50%); display:flex; justify-content:space-between; pointer-events:none; }
+.sp-marker { position:relative; width:28px; height:28px; display:flex; align-items:center; justify-content:center; }
+.sp-marker::before { content:''; position:absolute; width:14px; height:14px; border-radius:50%; background:var(--white);
+  border:3px solid rgba(44,62,80,.15); transition:all .4s var(--ease); z-index:2; }
+.sp-marker.done::before { background:var(--eos-red); border-color:var(--eos-red); box-shadow:0 0 0 4px rgba(227,6,19,.15); }
+.sp-marker.current::before { background:var(--white); border-color:var(--eos-red); border-width:3px;
+  box-shadow:0 0 0 4px rgba(227,6,19,.25); animation:pulseMarker 2s var(--ease) infinite; }
+@keyframes pulseMarker { 0%,100%{box-shadow:0 0 0 4px rgba(227,6,19,.25);} 50%{box-shadow:0 0 0 8px rgba(227,6,19,0);} }
+.sp-marker-label { position:absolute; top:22px; left:50%; transform:translateX(-50%); white-space:nowrap;
+  font-family:var(--font-head); font-size:.72rem; font-weight:600; color:#7C8894; text-align:center; }
+.sp-marker.current .sp-marker-label { color:var(--eos-red); font-weight:700; }
+.sp-marker.done .sp-marker-label { color:var(--green); }
+.sp-stage-info { text-align:center; padding:14px 20px; margin-top:22px; border-radius:14px;
+  background:linear-gradient(120deg,rgba(227,6,19,.06),rgba(183,28,28,.02)); border:1px solid rgba(227,6,19,.12); }
+.sp-stage-label { font-family:var(--font-head); font-size:.72rem; font-weight:600; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--eos-red); margin-bottom:6px; }
+.sp-stage-name { font-family:var(--font-head); font-weight:800; font-size:1.25rem; color:var(--text); }
+.sp-stage-sub { font-size:.88rem; font-weight:600; color:#7C8894; margin-top:5px; }
+.sp-stats { display:flex; flex-wrap:wrap; gap:26px; margin-top:22px; }
+.sp-stat { font-size:.86rem; font-weight:600; color:#7C8894; }
+.sp-stat b { display:block; font-family:var(--font-head); font-size:1.15rem; color:var(--text); margin-bottom:2px; }
+.sp-finished .sp-bar { background:linear-gradient(90deg,var(--green),#3FBF7F); }
+.sp-finished .sp-marker.done::before { background:var(--green); border-color:var(--green); box-shadow:0 0 0 4px rgba(30,158,90,.15); }
+.sp-finished .sp-stage-info { background:linear-gradient(120deg,rgba(30,158,90,.08),rgba(30,158,90,.03));
+  border-color:rgba(30,158,90,.2); }
+.sp-finished .sp-stage-label { color:var(--green); }
+
 /* КАРТОЧКИ ИГР */
 .games-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:26px; }
 .game-card { background:rgba(255,255,255,.92); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,.95);
@@ -317,7 +352,7 @@ footer .dot { color:var(--eos-red); }
   </section>
 
   <section class="tab-panel" id="panel-archive">
-    <div id="archiveSummary"></div>
+    <div id="seasonPath"></div>
     <div class="search-box">
       <input type="text" id="searchArchive" placeholder="Поиск игрока в прошедших играх…" autocomplete="off">
       <span class="icon">🔍</span>
@@ -675,6 +710,75 @@ function renderArchiveSummary(past) {
     </div>
   </div>`;
 }
+  /* ================== ПУТЬ СЕЗОНА ================== */
+const STAGES = [
+  { name: 'Тур 1',     games: 13 },
+  { name: 'Тур 2',     games: 13 },
+  { name: 'Тур 3',     games: 13 },
+  { name: 'Полуфинал', games: 3  },
+  { name: 'Финал',     games: 1  }
+];
+
+function getStageInfo(gamesPlayed) {
+  let remaining = gamesPlayed;
+  for (let i = 0; i < STAGES.length; i++) {
+    if (remaining < STAGES[i].games) {
+      return { stageIndex: i, stageProgress: remaining, stageTotal: STAGES[i].games, finished: false };
+    }
+    remaining -= STAGES[i].games;
+  }
+  return { stageIndex: STAGES.length - 1, stageProgress: STAGES[STAGES.length - 1].games, 
+           stageTotal: STAGES[STAGES.length - 1].games, finished: true };
+}
+
+function renderSeasonPath(past) {
+  const host = document.getElementById('seasonPath');
+  const totalGames = STAGES.reduce((s, st) => s + st.games, 0);
+  const played = past.length;
+  const pct = totalGames ? Math.round(played / totalGames * 100) : 0;
+  const info = getStageInfo(played);
+  const currentStage = STAGES[info.stageIndex];
+  
+  const all = past.flatMap(g => g.players.filter(p => p.score !== null).map(p => ({ p, v: p.score + bonusOf(p) })));
+  const best = all.length ? Math.max(...all.map(x => x.v)) : 0;
+  const bestPlayer = all.find(x => x.v === best)?.p;
+  const participants = new Set(past.flatMap(g => g.players.map(p => p.name))).size;
+  const remaining = totalGames - played;
+
+  const markersHTML = STAGES.map((st, i) => {
+    let cls = '';
+    if (i < info.stageIndex) cls = 'done';
+    else if (i === info.stageIndex && !info.finished) cls = 'current';
+    else if (info.finished) cls = 'done';
+    const label = i < info.stageIndex ? '✓' : (i === info.stageIndex && !info.finished ? '●' : (i + 1));
+    return `<div class="sp-marker ${cls}"><span class="sp-marker-label">${st.name}</span></div>`;
+  }).join('');
+
+  const stageText = info.finished 
+    ? `Сезон завершён! Сыграно все ${totalGames} игр`
+    : `${currentStage.name} · Игра ${info.stageProgress} из ${info.stageTotal}`;
+
+  host.innerHTML = `<div class="season-path${info.finished ? ' sp-finished' : ''}">
+    <div class="sp-top">
+      <span class="sp-title">🗺 Путь сезона</span>
+      <span class="sp-progress-text">${played} из ${totalGames} игр · ${pct}%</span>
+    </div>
+    <div class="sp-bar-wrap">
+      <div class="sp-bar" style="width:${pct}%"></div>
+      <div class="sp-markers">${markersHTML}</div>
+    </div>
+    <div class="sp-stage-info">
+      <div class="sp-stage-label">${info.finished ? '🏁 Итог' : '📍 Сейчас'}</div>
+      <div class="sp-stage-name">${stageText}</div>
+      ${!info.finished && remaining > 0 ? `<div class="sp-stage-sub">До конца этапа: ${info.stageTotal - info.stageProgress} ${plural(info.stageTotal - info.stageProgress, ['игра', 'игры', 'игр'])}</div>` : ''}
+    </div>
+    <div class="sp-stats">
+      <div class="sp-stat"><b>${participants}</b>${plural(participants, ['участник сыграл', 'участника сыграли', 'участников сыграли'])}</div>
+      <div class="sp-stat"><b>${fmt(best)}</b>лучший результат${bestPlayer ? ' · ' + esc(bestPlayer.name) : ''}</div>
+      <div class="sp-stat"><b>${remaining}</b>${plural(remaining, ['игра впереди', 'игры впереди', 'игр впереди'])}</div>
+    </div>
+  </div>`;
+}
 
 /* ================== РЕЙТИНГ ================== */
 function buildRating() {
@@ -814,6 +918,8 @@ function render() {
   const nextN = renderCountdown();
   renderGames(nextN);
   renderRating();
+  const past = GAMES.filter(g => g.status === 'done');
+  renderSeasonPath(past);
   runGames(); runArchive(); filterRating();
 }
 loadAll();
