@@ -9,814 +9,1034 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --eos-red: #E30613;
-  --eos-dark-red: #B71C1C;
-  --white: #FFFFFF;
-  --bg: #F8F9FA;
-  --text: #2C3E50;
-  --gold-bg: #FFFDF5;
-  --gold-stripe: #E6C88A;
-  --green: #1E9E5A;
-  --blue: #2470C8;
-  --orange: #E8850C;
-  --font-head: 'Montserrat', sans-serif;
-  --font-body: 'Manrope', sans-serif;
-  --radius: 18px;
-  --shadow-sm: 0 2px 10px rgba(44,62,80,.07);
-  --shadow-md: 0 10px 30px rgba(44,62,80,.10);
-  --shadow-lg: 0 18px 45px rgba(183,28,.16);
-  --ease: cubic-bezier(.22,.61,.36,1);
+--eos-red: #E30613;
+--eos-dark-red: #B71C1C;
+--white: #FFFFFF;
+--bg: #F8F9FA;
+--text: #2C3E50;
+--gold-bg: #FFFDF5;
+--gold-stripe: #E6C88A;
+--green: #1E9E5A;
+--blue: #2470C8;
+--orange: #E8850C;
+--font-head: 'Montserrat', sans-serif;
+--font-body: 'Manrope', sans-serif;
+--radius: 18px;
+--shadow-sm: 0 2px 10px rgba(44,62,80,.07);
+--shadow-md: 0 10px 30px rgba(44,62,80,.10);
+--shadow-lg: 0 18px 45px rgba(183,28,28,.16);
+--ease: cubic-bezier(.22,.61,.36,1);
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
-  font-family: var(--font-body);
-  background: radial-gradient(1200px 500px at 85% -100px, rgba(227,6,19,.05), transparent 60%), var(--bg);
-  color: var(--text); min-height:100vh;
+font-family: var(--font-body);
+background:
+radial-gradient(1200px 500px at 85% -100px, rgba(227,6,19,.05), transparent 60%),
+var(--bg);
+color: var(--text);
+min-height: 100vh;
+-webkit-font-smoothing: antialiased;
 }
-
-/* ШАПКА */
-header { position:relative; overflow:hidden; text-align:center; color:var(--white);
-  background:linear-gradient(135deg,#7A0E14 0%,var(--eos-dark-red) 35%,var(--eos-red) 75%,#FF3B2F 110%);
-  padding:64px 24px 88px; }
-header::before, header::after { content:''; position:absolute; border-radius:50%; pointer-events:none; }
-header::before { width:560px; height:560px; top:-280px; left:-160px;
-  background:radial-gradient(circle,rgba(255,255,255,.10),transparent 70%); animation:drift 14s var(--ease) infinite alternate; }
-header::after { width:420px; height:420px; bottom:-240px; right:-120px; border:1.5px solid rgba(255,255,255,.18);
-  background:radial-gradient(circle,rgba(255,255,255,.06),transparent 70%); animation:drift 18s var(--ease) infinite alternate-reverse; }
-@keyframes drift { from{transform:translate(0,0) scale(1);} to{transform:translate(40px,25px) scale(1.08);} }
-.header-pattern { position:absolute; inset:0; pointer-events:none;
-  background-image:radial-gradient(rgba(255,255,255,.14) 1px, transparent 1.5px); background-size:26px 26px;
-  mask-image:linear-gradient(to bottom,rgba(0,0,0,.5),transparent 75%);
-  -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,.5),transparent 75%); }
-.header-inner { position:relative; z-index:2; animation:fadeUp .9s var(--ease) both; }
-.header-badge { display:inline-block; font-family:var(--font-head); font-size:.74rem; font-weight:600;
-  letter-spacing:.2em; text-transform:uppercase; padding:8px 22px; border:1px solid rgba(255,255,255,.35);
-  border-radius:100px; background:rgba(255,255,255,.10); backdrop-filter:blur(6px); margin-bottom:26px; }
-header h1 { font-family:var(--font-head); font-weight:800; font-size:clamp(2.2rem,5.2vw,3.8rem);
-  letter-spacing:-.02em; line-height:1.1; text-transform:uppercase; text-shadow:0 4px 24px rgba(0,0,0,.22); }
-header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 80%);
-  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-  background-size:200% auto; animation:shine 5s linear infinite; }
-@keyframes shine { to { background-position:200% center; } }
-.header-divider { width:72px; height:3px; margin:24px auto; border-radius:3px;
-  background:linear-gradient(90deg,transparent,var(--gold-stripe),transparent); }
-.quote { font-family:var(--font-head); font-style:italic; font-weight:500; font-size:clamp(.98rem,1.8vw,1.15rem);
-  max-width:620px; margin:0 auto; opacity:.93; line-height:1.65; }
-.quote-author { display:block; font-style:normal; font-size:.76rem; font-weight:600;
-  letter-spacing:.18em; text-transform:uppercase; margin-top:14px; opacity:.72; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(22px);} to{opacity:1;transform:translateY(0);} }
-
-.container { max-width:1240px; margin:0 auto; padding:0 24px 80px; }
-
-/* ВКЛАДКИ */
-.tabs-wrap { position:relative; display:flex; gap:4px; width:fit-content; margin:-34px auto 40px; padding:6px;
-  background:rgba(255,255,255,.85); backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,.9);
-  border-radius:100px; box-shadow:var(--shadow-md); z-index:5; }
-.tab-indicator { position:absolute; top:6px; bottom:6px; border-radius:100px;
-  background:linear-gradient(120deg,var(--eos-red),var(--eos-dark-red));
-  box-shadow:0 6px 18px rgba(227,6,19,.35); transition:left .45s var(--ease), width .45s var(--ease); z-index:0; }
-.tab-btn { position:relative; z-index:1; border:none; background:transparent; font-family:var(--font-head);
-  font-size:.9rem; font-weight:600; color:var(--text); padding:13px 26px; border-radius:100px;
-  cursor:pointer; transition:color .35s var(--ease); white-space:nowrap; }
-.tab-btn.active { color:var(--white); }
-.tab-count { display:inline-block; margin-left:7px; padding:2px 8px; border-radius:100px; font-size:.7rem;
-  font-weight:700; background:rgba(44,62,80,.09); color:#5C6B7A; transition:background .35s, color .35s; }
-.tab-btn.active .tab-count { background:rgba(255,255,255,.25); color:var(--white); }
-.tab-panel { display:none; animation:panelIn .55s var(--ease) both; }
-.tab-panel.active { display:block; }
-@keyframes panelIn { from{opacity:0;transform:translateY(16px);} to{opacity:1;transform:translateY(0);} }
-
-/* СТАТУС ЗАГРУЗКИ */
-.load-bar { display:flex; align-items:center; justify-content:center; gap:12px; padding:16px 22px;
-  margin-bottom:26px; border-radius:var(--radius); background:var(--white); border:1px solid rgba(44,62,80,.07);
-  box-shadow:var(--shadow-sm); font-size:.88rem; font-weight:600; color:#7C8894; }
-.load-bar.hidden { display:none; }
-.load-bar.error { color:var(--eos-dark-red); background:#FFF5; border-color:rgba(227,6,19,.2); }
-.spinner { width:18px; height:18px; border:2.5px solid rgba(227,6,19,.2); border-top-color:var(--eos-red);
-  border-radius:50%; animation:spin .8s linear infinite; }
-@keyframes spin { to { transform:rotate(360deg); } }
-.reload-btn { font-family:var(--font-head); font-size:.78rem; font-weight:700; border:none; cursor:pointer;
-  padding:7px 15px; border-radius:100px; background:var(--eos-red); color:var(--white); }
-.reload-btn:hover { background:var(--eos-dark-red); }
-
-/* СЧЁТЧИК */
-.countdown { position:relative; overflow:hidden; display:flex; flex-wrap:wrap; align-items:center;
-  justify-content:space-between; gap:22px; padding:26px 30px; margin-bottom:34px; border-radius:var(--radius);
-  background:linear-gradient(120deg,#8E1017 0%,var(--eos-dark-red) 45%,var(--eos-red) 100%);
-  color:var(--white); box-shadow:var(--shadow-lg); animation:cardIn .7s var(--ease) both; }
-.countdown::after { content:''; position:absolute; right:-70px; top:-90px; width:280px; height:280px;
-  border-radius:50%; background:radial-gradient(circle,rgba(255,255,255,.12),transparent 70%); pointer-events:none; }
-.cd-info, .cd-timer { position:relative; z-index:2; }
-.cd-label { font-family:var(--font-head); font-size:.72rem; font-weight:600; letter-spacing:.2em;
-  text-transform:uppercase; opacity:.8; margin-bottom:8px; }
-.cd-title { font-family:var(--font-head); font-size:clamp(1.1rem,2.4vw,1.5rem); font-weight:700; letter-spacing:-.01em; }
-.cd-sub { font-size:.87rem; font-weight:500; opacity:.82; margin-top:5px; }
-.cd-timer { display:flex; gap:10px; }
-.cd-unit { min-width:74px; text-align:center; padding:12px 10px 10px; border-radius:14px;
-  background:rgba(255,255,255,.13); border:1px solid rgba(255,255,255,.22); backdrop-filter:blur(6px); }
-.cd-num { font-family:var(--font-head); font-size:1.7rem; font-weight:800; line-height:1; font-variant-numeric:tabular-nums; }
-.cd-cap { font-size:.66rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; opacity:.78; margin-top:6px; }
-.countdown.finished { justify-content:center; text-align:center; }
-
-/* ПОИСК */
-.search-box { position:relative; max-width:460px; margin:0 auto 40px; }
-.search-box .icon { position:absolute; left:20px; top:50%; transform:translateY(-50%); font-size:1.05rem; opacity:.45; pointer-events:none; }
-.search-box input { width:100%; font-family:inherit; font-size:1rem; font-weight:500; color:var(--text);
-  padding:16px 48px 16px 52px; border:1.5px solid rgba(44,62,80,.12); border-radius:100px; background:var(--white);
-  box-shadow:var(--shadow-sm); outline:none; transition:border-color .3s var(--ease), box-shadow .3s var(--ease); }
-.search-box input::placeholder { color:#9AA7B2; font-weight:500; }
-.search-box input:focus { border-color:var(--eos-red); box-shadow:0 0 0 4px rgba(227,6,19,.10), var(--shadow-md); }
-.search-clear { position:absolute; right:14px; top:50%; transform:translateY(-50%); border:none;
-  background:rgba(44,62,80,.08); color:var(--text); width:26px; height:26px; border-radius:50%;
-  font-size:.8rem; cursor:pointer; display:none; transition:background .25s; }
-.search-clear:hover { background:rgba(227,6,19,.15); color:var(--eos-red); }
-.search-hint { text-align:center; font-size:.86rem; color:#8A97A3; margin:-26px 0 32px; min-height:1.2em; }
-.search-hint .found { color:var(--eos-red); font-weight:700; }
-
-/* ПЛАШКА ТОП-12 */
-.playoff-banner { position:relative; overflow:hidden; display:flex; align-items:center; gap:20px;
-  padding:22px 28px; margin-bottom:26px; border-radius:var(--radius);
-  background:linear-gradient(120deg,#FFF7E0 0%,var(--gold-bg) 55%,#FFF1CC 100%);
-  border:1px solid var(--gold-stripe); box-shadow:var(--shadow-sm); animation:cardIn .6s var(--ease) both; }
-.playoff-banner::before { content:''; position:absolute; left:0; top:0; bottom:0; width:6px;
-  background:linear-gradient(180deg,#F7E7BE,var(--gold-stripe)); }
-.playoff-banner::after { content:''; position:absolute; right:-60px; top:-70px; width:220px; height:220px;
-  border-radius:50%; background:radial-gradient(circle,rgba(230,200,138,.35),transparent 70%); pointer-events:none; }
-.pb-icon { font-size:2.1rem; line-height:1; position:relative; z-index:2; animation:bob 3s var(--ease) infinite; }
-@keyframes bob { 0%,100%{transform:translateY(0) rotate(-4deg);} 50%{transform:translateY(-5px) rotate(4deg);} }
-.pb-text { position:relative; z-index:2; }
-.pb-title { font-family:var(--font-head); font-weight:800; font-size:1.06rem; color:#7A5B1E; letter-spacing:-.01em; }
-.pb-sub { font-size:.88rem; font-weight:600; color:#A08A52; margin-top:5px; line-height:1.5; }
-
-/* СВОДКА АРХИВА */
-.archive-summary { padding:24px 28px; margin-bottom:30px; border-radius:var(--radius); background:var(--white);
-  border:1px solid rgba(44,62,80,.07); box-shadow:var(--shadow-sm); animation:cardIn .6s var(--ease) both; }
-.as-top { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:12px; }
-.as-title { font-family:var(--font-head); font-weight:700; font-size:1.1rem; }
-.as-count { font-family:var(--font-head); font-weight:800; color:var(--eos-red); font-size:1.1rem; font-variant-numeric:tabular-nums; }
-.progress { height:9px; border-radius:9px; background:rgba(44,62,80,.08); overflow:hidden; margin-top:14px; }
-.progress span { display:block; height:100%; border-radius:9px;
-  background:linear-gradient(90deg,var(--eos-dark-red),var(--eos-red)); transition:width 1s var(--ease); }
-.as-stats { display:flex; flex-wrap:wrap; gap:26px; margin-top:16px; }
-.as-stat { font-size:.86rem; font-weight:600; color:#7C8894; }
-.as-stat b { display:block; font-family:var(--font-head); font-size:1.15rem; color:var(--text); margin-bottom:2px; }
-
-/* КАРТОЧКИ ИГР */
-.games-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:26px; }
-.game-card { background:rgba(255,255,255,.92); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,.95);
-  border-radius:var(--radius); box-shadow:var(--shadow-sm); overflow:hidden; display:flex; flex-direction:column;
-  transition:transform .4s var(--ease), box-shadow .4s var(--ease); animation:cardIn .6s var(--ease) both; }
-.game-card:nth-child(3n+2){animation-delay:.07s}
-.game-card:nth-child(3n+3){animation-delay:.14s}
-@keyframes cardIn { from{opacity:0;transform:translateY(24px) scale(.98);} to{opacity:1;transform:translateY(0) scale(1);} }
-.game-card:hover { transform:translateY(-6px); box-shadow:var(--shadow-lg); }
-.game-card.next-game { box-shadow:0 0 0 2px rgba(227,6,19,.35), var(--shadow-md); }
-.game-card.hidden-by-search { display:none; }
-.card-head { position:relative; padding:20px 22px 16px;
-  background:linear-gradient(120deg,rgba(227,6,19,.05),rgba(183,28,28,.02));
-  border-bottom:1px solid rgba(44,62,80,.07); }
-.game-card.archived .card-head { background:linear-gradient(120deg,rgba(30,158,90,.06),rgba(30,158,90,.02)); }
-.card-head::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px;
-  background:linear-gradient(180deg,var(--eos-red),var(--eos-dark-red)); }
-.game-card.archived .card-head::before { background:linear-gradient(180deg,#3FBF7F,var(--green)); }
-.game-number { font-family:var(--font-head); font-size:.7rem; font-weight:700; letter-spacing:.18em;
-  text-transform:uppercase; color:var(--eos-red); margin-bottom:6px; }
-.game-card.archived .game-number { color:var(--green); }
-.game-date { font-family:var(--font-head); font-size:1.1rem; font-weight:700; letter-spacing:-.01em; }
-.game-time { font-size:.84rem; font-weight:600; color:#7C8894; margin-top:3px; }
-.winner-line { font-size:.84rem; font-weight:700; color:#8A6A22; margin-top:8px; }
-.status { position:absolute; top:18px; right:18px; font-family:var(--font-head); font-size:.68rem;
-  font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:6px 13px; border-radius:100px;
-  display:inline-flex; align-items:center; gap:6px; }
-.status::before { content:''; width:7px; height:7px; border-radius:50%; background:currentColor; }
-.status.done{color:var(--green);background:rgba(30,158,90,.10);box-shadow:inset 0 0 0 1px rgba(30,158,90,.25)}
-.status.planned{color:var(--blue);background:rgba(36,112,200,.10);box-shadow:inset 0 0 0 1px rgba(36,112,200,.25)}
-.status.moved{color:var(--orange);background:rgba(232,133,12,.10);box-shadow:inset 0 0 0 1px rgba(232,133,12,.25)}
-.status.done::before { animation:pulse 2.2s infinite; }
-@keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(30,158,90,.4);} 50%{box-shadow:0 0 0 5px rgba(30,158,90,0);} }
-.players-list { padding:10px 8px 16px; flex:1; }
-.player-row { display:flex; align-items:center; gap:9px; padding:10px 14px; border-radius:12px;
-  font-size:.94rem; transition:background .3s var(--ease); }
-.player-row + .player-row { position:relative; }
-.player-row + .player-row::before { content:''; position:absolute; top:0; left:14px; right:14px; height:1px;
-  background:rgba(44,62,80,.06); }
-.player-row:hover { background:rgba(227,6,19,.045); }
-.player-row.winner { background:linear-gradient(90deg,rgba(230,200,138,.28),rgba(230,200,138,.04)); }
-.player-row.search-hit { background:linear-gradient(90deg,rgba(227,6,19,.10),rgba(227,6,19,.03));
-  box-shadow:inset 3px 0 0 var(--eos-red); }
-.player-name { flex:1; font-weight:600; }
-.player-row.search-hit .player-name { font-weight:800; }
-.score-wrap { text-align:right; min-width:76px; }
-.player-score { display:block; font-family:var(--font-head); font-weight:700; font-variant-numeric:tabular-nums; color:var(--eos-dark-red); }
-.player-score.empty { color:#B4BEC7; font-weight:600; }
-.score-base { display:block; font-size:.68rem; font-weight:600; color:#9AA7B2; margin-top:2px; font-variant-numeric:tabular-nums; }
-.score-base b { color:#B08A32; font-weight:700; }
-.award { font-size:1rem; line-height:1; cursor:help; transition:transform .25s var(--ease); }
-.award:hover { transform:scale(1.28) rotate(-6deg); }
-
-/* ПЛАВАЮЩАЯ ПОДСКАЗКА */
-.float-tip { position:fixed; z-index:9999; top:0; left:0; max-width:260px; font-family:var(--font-head);
-  font-size:.74rem; font-weight:600; line-height:1.35; color:var(--white); background:var(--text);
-  padding:8px 13px; border-radius:9px; box-shadow:0 12px 30px rgba(44,62,80,.28); opacity:0;
-  transform:translateY(5px); pointer-events:none; transition:opacity .2s var(--ease), transform .2s var(--ease); }
-.float-tip.visible { opacity:1; transform:translateY(0); }
-.float-tip::after { content:''; position:absolute; top:100%; left:var(--arrow,50%); transform:translateX(-50%);
-  border:6px solid transparent; border-top-color:var(--text); }
-.float-tip.below::after { top:auto; bottom:100%; border-top-color:transparent; border-bottom-color:var(--text); }
-
-.no-results { display:none; text-align:center; padding:60px 20px; color:#8A97A3; font-size:1.05rem; font-weight:600; }
-.no-results.visible { display:block; }
-.empty-state { text-align:center; padding:50px 20px; color:#8A97A3; font-size:1rem; font-weight:600; grid-column:1/-1; }
-
-/* РЕЙТИНГ */
-.rating-wrap { background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow-md);
-  overflow:hidden; border:1px solid rgba(44,62,80,.06); }
-table { width:100%; border-collapse:collapse; }
-thead th { background:linear-gradient(120deg,var(--eos-dark-red),var(--eos-red)); color:var(--white);
-  font-family:var(--font-head); font-size:.72rem; font-weight:700; letter-spacing:.13em;
-  text-transform:uppercase; text-align:left; padding:18px 20px; }
-thead th:first-child { text-align:center; width:84px; }
-thead th:last-child { text-align:right; }
-tbody td { padding:14px 20px; font-size:.95rem; border-bottom:1px solid rgba(44,62,80,.06); transition:background .3s var(--ease); }
-tbody tr { animation:rowIn .5s var(--ease) both; animation-delay:calc(var(--i,0) * .03s); }
-@keyframes rowIn { from{opacity:0;transform:translateX(-10px);} to{opacity:1;transform:translateX(0);} }
-tbody tr:hover td { background:rgba(227,6,19,.035); }
-tbody tr.hidden-by-search { display:none; }
-tbody tr.search-hit td { background:linear-gradient(90deg,rgba(227,6,19,.09),rgba(227,6,19,.02)); }
-.rank-cell { text-align:center; }
-.rank-badge { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px;
-  border-radius:50%; font-family:var(--font-head); font-weight:700; font-size:.86rem;
-  background:rgba(44,62,80,.06); color:#5C6B7A; }
-tr.top12 td:first-child { border-left:4px solid var(--gold-stripe); padding-left:16px; }
-tr.top12 td { background:var(--gold-bg); }
-tr.top12:hover td { background:#FFF8E4; }
-tr.top12 .rank-badge { background:linear-gradient(135deg,#F3DFAE,var(--gold-stripe)); color:#7A5B1E;
-  animation:goldGlow 3.5s var(--ease) infinite; }
-@keyframes goldGlow { 0%,100%{box-shadow:0 2px 8px rgba(230,200,138,.45);} 50%{box-shadow:0 2px 14px rgba(230,200,138,.85);} }
-tr.rank-1 .rank-badge { background:linear-gradient(135deg,#FFE9A8,#E8B84B); font-size:.95rem; }
-tr.cutoff td { border-bottom:2px dashed rgba(227,6,19,.5); }
-.cutoff-note { font-family:var(--font-head); font-size:.66rem; font-weight:700; letter-spacing:.14em;
-  text-transform:uppercase; color:var(--eos-red); display:block; margin-top:6px; }
-.fio { font-family:var(--font-head); font-weight:600; }
-.meta { color:#7C8894; font-weight:500; }
-.games-played { color:#9AA7B2; font-weight:600; font-size:.84rem; }
-.points-cell { text-align:right; }
-.points-total { font-family:var(--font-head); font-weight:800; font-size:1.02rem; color:var(--eos-dark-red); font-variant-numeric:tabular-nums; }
-.points-bonus { display:block; font-size:.7rem; font-weight:700; color:#B08A32; margin-top:2px; }
-.bonus-note { text-align:center; font-size:.84rem; color:#8A97A3; font-weight:600; margin-top:16px; }
-
-footer { text-align:center; padding:34px 20px 44px; color:#97A3AF; font-size:.84rem; font-weight:600; letter-spacing:.04em; }
-footer .dot { color:var(--eos-red); }
-
-@media (max-width:760px) {
-  header { padding:46px 18px 74px; }
-  .tabs-wrap { width:calc(100% - 24px); }
-  .tab-btn { flex:1; padding:12px 6px; font-size:.74rem; }
-  .tab-count { display:none; }
-  .countdown { padding:22px; }
-  .cd-unit { min-width:62px; }
-  .cd-num { font-size:1.35rem; }
-  thead th:nth-child(3), tbody td:nth-child(3),
-  thead th:nth-child(4), tbody td:nth-child(4) { display:none; }
+/* ============ ШАПКА ============ */
+header {
+position: relative;
+overflow: hidden;
+background: linear-gradient(135deg, #7A0E14 0%, var(--eos-dark-red) 35%, var(--eos-red) 75%, #FF3B2F 110%);
+color: var(--white);
+padding: 64px 24px 88px;
+text-align: center;
+}
+header::before, header::after {
+content: ''; position: absolute; border-radius: 50%; pointer-events: none;
+}
+header::before {
+width: 560px; height: 560px; top: -280px; left: -160px;
+background: radial-gradient(circle, rgba(255,255,255,.10), transparent 70%);
+animation: drift 14s var(--ease) infinite alternate;
+}
+header::after {
+width: 420px; height: 420px; bottom: -240px; right: -120px;
+border: 1.5px solid rgba(255,255,255,.18);
+background: radial-gradient(circle, rgba(255,255,255,.06), transparent 70%);
+animation: drift 18s var(--ease) infinite alternate-reverse;
+}
+@keyframes drift {
+from { transform: translate(0,0) scale(1); }
+to   { transform: translate(40px,25px) scale(1.08); }
+}
+.header-pattern {
+position: absolute; inset: 0;
+background-image: radial-gradient(rgba(255,255,255,.14) 1px, transparent 1.5px);
+background-size: 26px 26px;
+mask-image: linear-gradient(to bottom, rgba(0,0,0,.5), transparent 75%);
+-webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.5), transparent 75%);
+pointer-events: none;
+}
+.header-inner { position: relative; z-index: 2; animation: fadeUp .9s var(--ease) both; }
+.header-badge {
+display: inline-block;
+font-family: var(--font-head);
+font-size: .74rem; font-weight: 600;
+letter-spacing: .2em; text-transform: uppercase;
+padding: 8px 22px;
+border: 1px solid rgba(255,255,255,.35);
+border-radius: 100px;
+background: rgba(255,255,255,.10);
+backdrop-filter: blur(6px);
+margin-bottom: 26px;
+}
+header h1 {
+font-family: var(--font-head);
+font-weight: 800;
+font-size: clamp(2.2rem, 5.2vw, 3.8rem);
+letter-spacing: -.02em;
+line-height: 1.1;
+text-transform: uppercase;
+text-shadow: 0 4px 24px rgba(0,0,0,.22);
+}
+header h1 .accent {
+background: linear-gradient(90deg, #FFF 20%, #FFE3B0 50%, #FFF 80%);
+-webkit-background-clip: text; background-clip: text;
+-webkit-text-fill-color: transparent;
+background-size: 200% auto;
+animation: shine 5s linear infinite;
+}
+@keyframes shine { to { background-position: 200% center; } }
+.header-divider {
+width: 72px; height: 3px; margin: 24px auto; border-radius: 3px;
+background: linear-gradient(90deg, transparent, var(--gold-stripe), transparent);
+}
+.quote {
+font-family: var(--font-head);
+font-style: italic; font-weight: 500;
+font-size: clamp(.98rem, 1.8vw, 1.15rem);
+max-width: 620px; margin: 0 auto;
+opacity: .93; line-height: 1.65;
+}
+.quote-author {
+display: block; font-style: normal;
+font-size: .76rem; font-weight: 600;
+letter-spacing: .18em; text-transform: uppercase;
+margin-top: 14px; opacity: .72;
+}
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(22px); }
+to   { opacity: 1; transform: translateY(0); }
+}
+/* ============ КОНТЕЙНЕР / ВКЛАДКИ ============ */
+.container { max-width: 1240px; margin: 0 auto; padding: 0 24px 80px; }
+.tabs-wrap {
+position: relative; display: flex; gap: 4px;
+width: fit-content; margin: -34px auto 40px; padding: 6px;
+background: rgba(255,255,255,.85);
+backdrop-filter: blur(14px);
+border: 1px solid rgba(255,255,255,.9);
+border-radius: 100px;
+box-shadow: var(--shadow-md);
+z-index: 5;
+}
+.tab-indicator {
+position: absolute; top: 6px; bottom: 6px; left: 6px; width: 0;
+border-radius: 100px;
+background: linear-gradient(120deg, var(--eos-red), var(--eos-dark-red));
+box-shadow: 0 6px 18px rgba(227,6,19,.35);
+transition: left .45s var(--ease), width .45s var(--ease);
+z-index: 0;
+}
+.tab-btn {
+position: relative; z-index: 1; border: none; background: transparent;
+font-family: var(--font-head); font-size: .92rem; font-weight: 600;
+color: var(--text); padding: 13px 30px; border-radius: 100px;
+cursor: pointer; transition: color .35s var(--ease); white-space: nowrap;
+}
+.tab-btn.active { color: var(--white); }
+.tab-panel { display: none; animation: panelIn .55s var(--ease) both; }
+.tab-panel.active { display: block; }
+@keyframes panelIn {
+from { opacity: 0; transform: translateY(16px); }
+to   { opacity: 1; transform: translateY(0); }
+}
+/* ============ СЧЁТЧИК ДНЕЙ ============ */
+.countdown {
+position: relative; overflow: hidden;
+display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+gap: 22px;
+padding: 26px 30px;
+margin-bottom: 34px;
+border-radius: var(--radius);
+background: linear-gradient(120deg, #8E1017 0%, var(--eos-dark-red) 45%, var(--eos-red) 100%);
+color: var(--white);
+box-shadow: var(--shadow-lg);
+animation: cardIn .7s var(--ease) both;
+}
+.countdown::after {
+content: ''; position: absolute; right: -70px; top: -90px;
+width: 280px; height: 280px; border-radius: 50%;
+background: radial-gradient(circle, rgba(255,255,255,.12), transparent 70%);
+pointer-events: none;
+}
+.cd-info { position: relative; z-index: 2; }
+.cd-label {
+font-family: var(--font-head);
+font-size: .72rem; font-weight: 600;
+letter-spacing: .2em; text-transform: uppercase;
+opacity: .8; margin-bottom: 8px;
+}
+.cd-title {
+font-family: var(--font-head);
+font-size: clamp(1.1rem, 2.4vw, 1.5rem); font-weight: 700; letter-spacing: -.01em;
+}
+.cd-sub { font-size: .87rem; font-weight: 500; opacity: .82; margin-top: 5px; }
+.cd-timer { position: relative; z-index: 2; display: flex; gap: 10px; }
+.cd-unit {
+min-width: 74px; text-align: center;
+padding: 12px 10px 10px;
+border-radius: 14px;
+background: rgba(255,255,255,.13);
+border: 1px solid rgba(255,255,255,.22);
+backdrop-filter: blur(6px);
+}
+.cd-num {
+font-family: var(--font-head);
+font-size: 1.7rem; font-weight: 800; line-height: 1;
+font-variant-numeric: tabular-nums;
+}
+.cd-cap {
+font-size: .66rem; font-weight: 600; letter-spacing: .12em;
+text-transform: uppercase; opacity: .78; margin-top: 6px;
+}
+.countdown.finished { justify-content: center; text-align: center; }
+/* ============ ПОИСК ============ */
+.search-box { position: relative; max-width: 460px; margin: 0 auto 40px; }
+.search-box .icon {
+position: absolute; left: 20px; top: 50%; transform: translateY(-50%);
+font-size: 1.05rem; opacity: .45; pointer-events: none;
+}
+.search-box input {
+width: 100%; font-family: inherit; font-size: 1rem; font-weight: 500; color: var(--text);
+padding: 16px 48px 16px 52px;
+border: 1.5px solid rgba(44,62,80,.12);
+border-radius: 100px; background: var(--white);
+box-shadow: var(--shadow-sm); outline: none;
+transition: border-color .3s var(--ease), box-shadow .3s var(--ease);
+}
+.search-box input::placeholder { color: #9AA7B2; font-weight: 500; }
+.search-box input:focus {
+border-color: var(--eos-red);
+box-shadow: 0 0 0 4px rgba(227,6,19,.10), var(--shadow-md);
+}
+.search-clear {
+position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+border: none; background: rgba(44,62,80,.08); color: var(--text);
+width: 26px; height: 26px; border-radius: 50%; font-size: .8rem;
+cursor: pointer; display: none; transition: background .25s, color .25s;
+}
+.search-clear:hover { background: rgba(227,6,19,.15); color: var(--eos-red); }
+.search-hint {
+text-align: center; font-size: .86rem; color: #8A97A3;
+margin: -26px 0 32px; min-height: 1.2em;
+}
+.search-hint .found { color: var(--eos-red); font-weight: 700; }
+/* ============ КАРТОЧКИ ИГР ============ */
+.games-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+gap: 26px;
+}
+.game-card {
+background: rgba(255,255,255,.92);
+backdrop-filter: blur(10px);
+border: 1px solid rgba(255,255,255,.95);
+border-radius: var(--radius);
+box-shadow: var(--shadow-sm);
+overflow: hidden;
+display: flex; flex-direction: column;
+transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+animation: cardIn .6s var(--ease) both;
+}
+.game-card:nth-child(3n+2) { animation-delay: .07s; }
+.game-card:nth-child(3n+3) { animation-delay: .14s; }
+@keyframes cardIn {
+from { opacity: 0; transform: translateY(24px) scale(.98); }
+to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.game-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+.game-card.next-game { box-shadow: 0 0 0 2px rgba(227,6,19,.35), var(--shadow-md); }
+.game-card.hidden-by-search { display: none; }
+.card-head {
+position: relative; padding: 20px 22px 16px;
+background: linear-gradient(120deg, rgba(227,6,19,.05), rgba(183,28,28,.02));
+border-bottom: 1px solid rgba(44,62,80,.07);
+}
+.card-head::before {
+content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+background: linear-gradient(180deg, var(--eos-red), var(--eos-dark-red));
+}
+.game-number {
+font-family: var(--font-head);
+font-size: .7rem; font-weight: 700; letter-spacing: .18em;
+text-transform: uppercase; color: var(--eos-red); margin-bottom: 6px;
+}
+.game-date { font-family: var(--font-head); font-size: 1.1rem; font-weight: 700; letter-spacing: -.01em; padding-right: 108px; }
+.game-time { font-size: .84rem; font-weight: 600; color: #7C8894; margin-top: 3px; }
+.status {
+position: absolute; top: 18px; right: 18px;
+font-family: var(--font-head);
+font-size: .68rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+padding: 6px 13px; border-radius: 100px;
+display: inline-flex; align-items: center; gap: 6px;
+}
+.status::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.status.done      { color: var(--green);  background: rgba(30,158,90,.10);  box-shadow: inset 0 0 0 1px rgba(30,158,90,.25); }
+.status.planned   { color: var(--blue);   background: rgba(36,112,200,.10); box-shadow: inset 0 0 0 1px rgba(36,112,200,.25); }
+.status.moved     { color: var(--orange); background: rgba(232,133,12,.10); box-shadow: inset 0 0 0 1px rgba(232,133,12,.25); }
+.status.done::before { animation: pulse 2.2s infinite; }
+@keyframes pulse {
+0%,100% { box-shadow: 0 0 0 0 rgba(30,158,90,.4); }
+50%      { box-shadow: 0 0 0 5px rgba(30,158,90,0); }
+}
+.players-list { padding: 10px 8px 16px; flex: 1; }
+.player-row {
+display: flex; align-items: center; gap: 9px;
+padding: 10px 14px; border-radius: 12px; font-size: .94rem;
+transition: background .3s var(--ease);
+}
+.player-row + .player-row { position: relative; }
+.player-row + .player-row::before {
+content: ''; position: absolute; top: 0; left: 14px; right: 14px;
+height: 1px; background: rgba(44,62,80,.06);
+}
+.player-row:hover { background: rgba(227,6,19,.045); }
+.player-row.search-hit {
+background: linear-gradient(90deg, rgba(227,6,19,.10), rgba(227,6,19,.03));
+box-shadow: inset 3px 0 0 var(--eos-red);
+}
+.player-name { flex: 1; font-weight: 600; }
+.player-row.search-hit .player-name { font-weight: 800; }
+.score-wrap { text-align: right; min-width: 76px; }
+.player-score {
+display: block;
+font-family: var(--font-head);
+font-weight: 700; font-variant-numeric: tabular-nums;
+color: var(--eos-dark-red);
+}
+.player-score.empty { color: #B4BEC7; font-weight: 600; }
+.score-base {
+display: block; font-size: .68rem; font-weight: 600;
+color: #9AA7B2; margin-top: 2px; font-variant-numeric: tabular-nums;
+}
+.score-base b { color: #B08A32; font-weight: 700; }
+.award {
+font-size: 1rem; line-height: 1; cursor: help;
+transition: transform .25s var(--ease);
+-webkit-tap-highlight-color: transparent;
+outline: none;
+}
+.award:hover, .award:focus-visible { transform: scale(1.28) rotate(-6deg); }
+.award:focus-visible { box-shadow: 0 0 0 3px rgba(227,6,19,.3); border-radius: 4px; }
+/* ============ СЛОЙ ПОДСКАЗОК ============ */
+.tip-layer {
+position: fixed; inset: 0;
+z-index: 2147483647;
+pointer-events: none;
+overflow: visible;
+}
+.tip-box {
+position: absolute; top: 0; left: 0;
+width: max-content;
+max-width: min(280px, calc(100vw - 24px));
+visibility: hidden;
+will-change: transform;
+}
+.tip-box.visible { visibility: visible; }
+.tip-inner {
+position: relative;
+font-family: var(--font-head);
+font-size: .76rem; font-weight: 600; line-height: 1.4;
+color: #fff; background: #1F2B38;
+padding: 9px 13px; border-radius: 10px;
+box-shadow: 0 14px 34px rgba(31,43,56,.34);
+white-space: normal; word-break: break-word;
+opacity: 0; transform: translateY(4px);
+transition: opacity .18s var(--ease), transform .18s var(--ease);
+}
+.tip-box.visible .tip-inner { opacity: 1; transform: translateY(0); }
+.tip-arrow {
+position: absolute;
+width: 10px; height: 10px;
+background: #1F2B38;
+transform: rotate(45deg);
+left: var(--ax, 50%);
+margin-left: -5px;
+}
+.tip-box.place-top    .tip-arrow { bottom: -4px; }
+.tip-box.place-bottom .tip-arrow { top: -4px; }
+.tip-box.place-side   .tip-arrow { display: none; }
+.no-results {
+display: none; text-align: center; padding: 60px 20px;
+color: #8A97A3; font-size: 1.05rem; font-weight: 600;
+}
+.no-results.visible { display: block; }
+.load-note {
+text-align: center; font-size: .8rem; color: #A6B1BB;
+font-weight: 600; margin: 18px 0 -10px;
+}
+/* ============ ТАБЛИЦА РЕЙТИНГА ============ */
+.rating-wrap {
+background: var(--white); border-radius: var(--radius);
+box-shadow: var(--shadow-md); overflow: hidden;
+border: 1px solid rgba(44,62,80,.06);
+}
+table { width: 100%; border-collapse: collapse; }
+thead th {
+background: linear-gradient(120deg, var(--eos-dark-red), var(--eos-red));
+color: var(--white);
+font-family: var(--font-head);
+font-size: .72rem; font-weight: 700; letter-spacing: .13em;
+text-transform: uppercase; text-align: left; padding: 18px 20px;
+}
+thead th:first-child { text-align: center; width: 84px; }
+thead th:last-child  { text-align: right; }
+tbody td {
+padding: 14px 20px; font-size: .95rem;
+border-bottom: 1px solid rgba(44,62,80,.06);
+transition: background .3s var(--ease);
+}
+tbody tr { animation: rowIn .5s var(--ease) both; animation-delay: calc(var(--i,0) * .03s); }
+@keyframes rowIn {
+from { opacity: 0; transform: translateX(-10px); }
+to   { opacity: 1; transform: translateX(0); }
+}
+tbody tr:hover td { background: rgba(227,6,19,.035); }
+tbody tr.hidden-by-search { display: none; }
+tbody tr.search-hit td { background: linear-gradient(90deg, rgba(227,6,19,.09), rgba(227,6,19,.02)); }
+.rank-cell { text-align: center; }
+.rank-badge {
+display: inline-flex; align-items: center; justify-content: center;
+width: 34px; height: 34px; border-radius: 50%;
+font-family: var(--font-head); font-weight: 700; font-size: .86rem;
+background: rgba(44,62,80,.06); color: #5C6B7A;
+}
+tr.top12 td:first-child { border-left: 4px solid var(--gold-stripe); padding-left: 16px; }
+tr.top12 td { background: var(--gold-bg); }
+tr.top12:hover td { background: #FFF8E4; }
+tr.top12 .rank-badge {
+background: linear-gradient(135deg, #F3DFAE, var(--gold-stripe));
+color: #7A5B1E; animation: goldGlow 3.5s var(--ease) infinite;
+}
+@keyframes goldGlow {
+0%,100% { box-shadow: 0 2px 8px rgba(230,200,138,.45); }
+50%      { box-shadow: 0 2px 14px rgba(230,200,138,.85); }
+}
+tr.rank-1 .rank-badge { background: linear-gradient(135deg,#FFE9A8,#E8B84B); font-size: .95rem; }
+.fio { font-family: var(--font-head); font-weight: 600; }
+.meta { color: #7C8894; font-weight: 500; }
+.games-played { color: #9AA7B2; font-weight: 600; font-size: .84rem; }
+.points-cell { text-align: right; }
+.points-total {
+font-family: var(--font-head); font-weight: 800; font-size: 1.02rem;
+color: var(--eos-dark-red); font-variant-numeric: tabular-nums;
+}
+.points-bonus {
+display: block; font-size: .7rem; font-weight: 700;
+color: #B08A32; margin-top: 2px;
+}
+.top12-legend {
+display: flex; align-items: center; gap: 10px; justify-content: center;
+margin-top: 22px; font-size: .86rem; color: #8A97A3; font-weight: 600;
+}
+.legend-swatch {
+width: 26px; height: 14px; border-radius: 4px;
+background: var(--gold-bg); border-left: 3px solid var(--gold-stripe);
+box-shadow: var(--shadow-sm);
+}
+.bonus-note {
+text-align: center; font-size: .84rem; color: #8A97A3;
+font-weight: 600; margin-top: 10px;
+}
+/* ============ ФУТЕР ============ */
+footer {
+text-align: center; padding: 34px 20px 44px;
+color: #97A3AF; font-size: .84rem; font-weight: 600; letter-spacing: .04em;
+}
+footer .dot { color: var(--eos-red); }
+@media (max-width: 700px) {
+header { padding: 46px 18px 74px; }
+.container { padding: 0 16px 60px; }
+.tabs-wrap { width: calc(100% - 24px); }
+.tab-btn { flex: 1; padding: 12px 8px; font-size: .82rem; }
+.countdown { padding: 22px; }
+.cd-unit { min-width: 62px; }
+.cd-num { font-size: 1.35rem; }
+.games-grid { grid-template-columns: 1fr; }
+thead th:nth-child(3), tbody td:nth-child(3),
+thead th:nth-child(4), tbody td:nth-child(4) { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+*, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
 </style>
 </head>
 <body>
-
 <header>
-  <div class="header-pattern"></div>
-  <div class="header-inner">
-    <span class="header-badge">Корпоративный интеллектуальный турнир · Сезон 2</span>
-    <h1>Своя Игра <span class="accent">EOS</span></h1>
-    <div class="header-divider"></div>
-    <p class="quote">«То, что хочешь ты зажечь в других, должно гореть в тебе самом»
-      <span class="quote-author">— Аврелий Августин</span>
-    </p>
-  </div>
-</header>
-
-<div class="container">
-
-  <nav class="tabs-wrap" id="tabsWrap">
-    <div class="tab-indicator" id="tabIndicator"></div>
-    <button class="tab-btn active" data-tab="schedule">📅 Расписание<span class="tab-count" id="cntUpcoming">0</span></button>
-    <button class="tab-btn" data-tab="archive">🗄 Прошедшие игры<span class="tab-count" id="cntArchive">0</span></button>
-    <button class="tab-btn" data-tab="rating">📊 Общий рейтинг</button>
-  </nav>
-
-  <div class="load-bar" id="loadBar"><span class="spinner"></span><span id="loadText">Загружаю данные из Google-таблицы…</span></div>
-
-  <section class="tab-panel active" id="panel-schedule">
-    <div id="countdownHost"></div>
-    <div class="search-box">
-      <input type="text" id="searchGames" placeholder="Поиск игрока по ФИО…" autocomplete="off">
-      <span class="icon">🔍</span>
-      <button class="search-clear" id="clearGames" title="Очистить">✕</button>
-    </div>
-    <p class="search-hint" id="hintGames"></p>
-    <div class="games-grid" id="gamesGrid"></div>
-    <div class="no-results" id="noGames">Игрок не найден среди предстоящих игр 🤷</div>
-  </section>
-
-  <section class="tab-panel" id="panel-archive">
-    <div id="archiveSummary"></div>
-    <div class="search-box">
-      <input type="text" id="searchArchive" placeholder="Поиск игрока в прошедших играх…" autocomplete="off">
-      <span class="icon">🔍</span>
-      <button class="search-clear" id="clearArchive" title="Очистить">✕</button>
-    </div>
-    <p class="search-hint" id="hintArchive"></p>
-    <div class="games-grid" id="archiveGrid"></div>
-    <div class="no-results" id="noArchive">Игрок не найден в прошедших играх 🤷</div>
-  </section>
-
-  <section class="tab-panel" id="panel-rating">
-    <div class="playoff-banner">
-      <span class="pb-icon">🏅</span>
-      <div class="pb-text">
-        <div class="pb-title">Топ-12 игроков сезона выходят в плей-офф</div>
-        <div class="pb-sub">Строки на золотом фоне — зона выхода. Пунктирная линия показывает границу отсечения: всё, что ниже, в плей-офф не попадает.</div>
-      </div>
-    </div>
-    <div class="search-box">
-      <input type="text" id="searchRating" placeholder="Поиск игрока по ФИО…" autocomplete="off">
-      <span class="icon">🔍</span>
-      <button class="search-clear" id="clearRating" title="Очистить">✕</button>
-    </div>
-    <p class="search-hint" id="hintRating"></p>
-    <div class="rating-wrap">
-      <table>
-        <thead><tr><th>Место</th><th>ФИО</th><th>Город</th><th>Отдел</th><th>Баллы</th></tr></thead>
-        <tbody id="ratingBody"></tbody>
-      </table>
-    </div>
-    <div class="no-results" id="noRating">Игрок не найден 🤷</div>
-    <p class="bonus-note">Баллы = сумма набранного в играх + автоматические бонусы: 🏆 победа +1000, ⭐ яркий игрок +500</p>
-  </section>
-
+<div class="header-pattern"></div>
+<div class="header-inner">
+<span class="header-badge">Корпоративный интеллектуальный турнир · Сезон 2</span>
+<h1>Своя Игра <span class="accent">EOS</span></h1>
+<div class="header-divider"></div>
+<p class="quote">«То, что хочешь ты зажечь в других, должно гореть в тебе самом»
+<span class="quote-author">— Аврелий Августин</span>
+</p>
 </div>
-
+</header>
+<div class="container">
+<nav class="tabs-wrap" id="tabsWrap">
+<div class="tab-indicator" id="tabIndicator"></div>
+<button class="tab-btn active" data-tab="schedule"> Расписание и результаты</button>
+<button class="tab-btn" data-tab="rating">📊 Общий рейтинг</button>
+</nav>
+<!-- ВКЛАДКА 1 -->
+<section class="tab-panel active" id="panel-schedule">
+<div id="countdownHost"></div>
+<div class="search-box">
+<input type="text" id="searchGames" placeholder="Поиск игрока по ФИО…" autocomplete="off">
+<span class="icon"></span>
+<button class="search-clear" id="clearGames" title="Очистить" aria-label="Очистить поиск">✕</button>
+</div>
+<p class="search-hint" id="hintGames"></p>
+<div class="games-grid" id="gamesGrid"></div>
+<div class="no-results" id="noGames">Игрок не найден ни в одной игре 🤷</div>
+<p class="load-note" id="loadNote"></p>
+</section>
+<!-- ВКЛАДКА 2 -->
+<section class="tab-panel" id="panel-rating">
+<div class="search-box">
+<input type="text" id="searchRating" placeholder="Поиск игрока по ФИО…" autocomplete="off">
+<span class="icon">🔍</span>
+<button class="search-clear" id="clearRating" title="Очистить" aria-label="Очистить поиск">✕</button>
+</div>
+<p class="search-hint" id="hintRating"></p>
+<div class="rating-wrap">
+<table>
+<thead>
+<tr><th>Место</th><th>ФИО</th><th>Город</th><th>Отдел</th><th>Баллы</th></tr>
+</thead>
+<tbody id="ratingBody"></tbody>
+</table>
+</div>
+<div class="no-results" id="noRating">Игрок не найден 🤷</div>
+<div class="top12-legend"><span class="legend-swatch"></span> Топ-12 — выход в плей-офф сезона</div>
+<p class="bonus-note">Баллы = сумма набранного в играх + автоматические бонусы: 🏆 победа +1000, ⭐ яркий игрок +500</p>
+</section>
+</div>
 <footer>
-  Своя Игра EOS <span class="dot">•</span> Сезон 2 <span class="dot">•</span> Все игры начинаются в 12:30 МСК
+Своя Игра EOS <span class="dot">•</span> Сезон 2 <span class="dot">•</span> Все игры начинаются в 12:30 МСК
 </footer>
-
-<div class="float-tip" id="floatTip"></div>
-
+<div class="tip-layer" id="tipLayer">
+<div class="tip-box" id="tipBox" role="tooltip">
+<div class="tip-inner"><span id="tipText"></span><span class="tip-arrow"></span></div>
+</div>
+</div>
 <script>
+'use strict';
 /* ================== НАСТРОЙКИ ================== */
-// ВСТАВЬТЕ СЮДА ВАШ URL ВЕБ-ПРИЛОЖЕНИЯ из Google Apps Script (тот, что заканчивается на /exec)
-const SCRIPT_URL = 'https://script.google.com/macros/s/echo?user_content_key=AUkAhnSD5OtfJKAeBcZ9hyiHY9RaWQ0jR5MfxS29nKNFWHXsCHu1vcWXOlaeUInM3hOPtdAfT8lonuHzbjDl4OatR32CSQFhsfmDdiW0q5YreNlR5VFuokI3FNphXF12Jj7w27kx4-ZSL5rYfDtsn3xQhKmeHl8qSHFsD_thxiG8YwezLej8s_-Ez-lyILOQrhY8xK7iMblu4fz559ncg9wtfsV_6UD1u5Wt0wq60m1F3nEFafo6-f603OTQSLkhubYOq5W3LtXwemy4RVtG4yg&lib=MoTW1Rg4YJIxNQ6mIMSSLI2Q3z3sxqU2QА/exec';
-
 const BONUS = { win: 1000, bright: 500 };
-const PLAYOFF_SIZE = 12;
-const GAME_TIME = '12:30';
+const TOP_N = 12;
+const TZ    = '+03:00';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwBLheiePly3_F7d1G5SgJb-KD0N5PRESySNM5Rv72u_KN2EM8ktRKichvfN6kPgZ8/exec';
 
-let GAMES = [];
-let PLAYERS = [];
-
+/* ================== ДАННЫЕ ПО УМОЛЧАНИЮ ================== */
+let GAMES = [
+{ n:1,  date:'4 июня 2026',      iso:'2026-06-04T12:30:00', status:'done', players:[
+{ name:'Иванов Алексей',   score:3400, win:true,  bright:false },
+{ name:'Петрова Мария',    score:2100, win:false, bright:true  },
+{ name:'Сидоров Дмитрий',  score:1800, win:false, bright:false },
+{ name:'Козлова Анна',     score:900,  win:false, bright:false } ] },
+{ n:2,  date:'11 июня 2026',     iso:'2026-06-11T12:30:00', status:'done', players:[
+{ name:'Смирнов Игорь',    score:2900, win:true,  bright:true  },
+{ name:'Васильева Ольга',  score:2500, win:false, bright:false },
+{ name:'Николаев Павел',   score:1200, win:false, bright:false },
+{ name:'Фёдорова Елена',   score:700,  win:false, bright:false } ] },
+{ n:3,  date:'18 июня 2026',     iso:'2026-06-18T12:30:00', status:'done', players:[
+{ name:'Морозов Андрей',   score:3100, win:true,  bright:false },
+{ name:'Волкова Татьяна',  score:2800, win:false, bright:true  },
+{ name:'Зайцев Сергей',    score:1500, win:false, bright:false },
+{ name:'Соколова Ирина',   score:1100, win:false, bright:false } ] },
+{ n:4,  date:'25 июня 2026',     iso:'2026-06-25T12:30:00', status:'done', players:[
+{ name:'Лебедев Максим',   score:2600, win:true,  bright:false },
+{ name:'Егорова Наталья',  score:2400, win:false, bright:false },
+{ name:'Павлов Виктор',    score:2000, win:false, bright:true  },
+{ name:'Крылова Дарья',    score:800,  win:false, bright:false } ] },
+{ n:5,  date:'2 июля 2026',      iso:'2026-07-02T12:30:00', status:'done', players:[
+{ name:'Орлов Константин', score:3600, win:true,  bright:true  },
+{ name:'Белова Светлана',  score:1900, win:false, bright:false },
+{ name:'Гусев Роман',      score:1400, win:false, bright:false },
+{ name:'Тихонова Юлия',    score:600,  win:false, bright:false } ] },
+{ n:6,  date:'9 июля 2026',      iso:'2026-07-09T12:30:00', status:'done', players:[
+{ name:'Иванов Алексей',   score:2700, win:false, bright:false },
+{ name:'Смирнов Игорь',    score:3200, win:true,  bright:false },
+{ name:'Волкова Татьяна',  score:2300, win:false, bright:true  },
+{ name:'Крылова Дарья',    score:1000, win:false, bright:false } ] },
+{ n:7,  date:'16 июля 2026',     iso:'2026-07-16T12:30:00', status:'done', players:[
+{ name:'Петрова Мария',    score:3300, win:true,  bright:true  },
+{ name:'Морозов Андрей',   score:2200, win:false, bright:false },
+{ name:'Николаев Павел',   score:1700, win:false, bright:false },
+{ name:'Тихонова Юлия',    score:1300, win:false, bright:false } ] },
+{ n:8,  date:'23 июля 2026',     iso:'2026-07-23T12:30:00', status:'moved', players:[
+{ name:'Лебедев Максим',   score:null, win:false, bright:false },
+{ name:'Белова Светлана',  score:null, win:false, bright:false },
+{ name:'Зайцев Сергей',    score:null, win:false, bright:false },
+{ name:'Фёдорова Елена',   score:null, win:false, bright:false } ] },
+{ n:9,  date:'6 августа 2026',   iso:'2026-08-06T12:30:00', status:'planned', players:[
+{ name:'Орлов Константин', score:null, win:false, bright:false },
+{ name:'Васильева Ольга',  score:null, win:false, bright:false },
+{ name:'Павлов Виктор',    score:null, win:false, bright:false },
+{ name:'Соколова Ирина',   score:null, win:false, bright:false } ] },
+{ n:10, date:'13 августа 2026',  iso:'2026-08-13T12:30:00', status:'planned', players:[
+{ name:'Сидоров Дмитрий',  score:null, win:false, bright:false },
+{ name:'Егорова Наталья',  score:null, win:false, bright:false },
+{ name:'Гусев Роман',      score:null, win:false, bright:false },
+{ name:'Козлова Анна',     score:null, win:false, bright:false } ] },
+{ n:11, date:'20 августа 2026',  iso:'2026-08-20T12:30:00', status:'planned', players:[
+{ name:'Иванов Алексей',   score:null, win:false, bright:false },
+{ name:'Петрова Мария',    score:null, win:false, bright:false },
+{ name:'Орлов Константин', score:null, win:false, bright:false },
+{ name:'Морозов Андрей',   score:null, win:false, bright:false } ] },
+{ n:12, date:'27 августа 2026',  iso:'2026-08-27T12:30:00', status:'planned', players:[
+{ name:'Смирнов Игорь',    score:null, win:false, bright:false },
+{ name:'Волкова Татьяна',  score:null, win:false, bright:false },
+{ name:'Лебедев Максим',   score:null, win:false, bright:false },
+{ name:'Белова Светлана',  score:null, win:false, bright:false } ] },
+{ n:13, date:'3 сентября 2026',  iso:'2026-09-03T12:30:00', status:'planned', players:[
+{ name:'Николаев Павел',   score:null, win:false, bright:false },
+{ name:'Зайцев Сергей',    score:null, win:false, bright:false },
+{ name:'Крылова Дарья',    score:null, win:false, bright:false },
+{ name:'Тихонова Юлия',    score:null, win:false, bright:false } ] },
+{ n:14, date:'10 сентября 2026', iso:'2026-09-10T12:30:00', status:'planned', players:[
+{ name:'Васильева Ольга',  score:null, win:false, bright:false },
+{ name:'Павлов Виктор',    score:null, win:false, bright:false },
+{ name:'Егорова Наталья',  score:null, win:false, bright:false },
+{ name:'Соколова Ирина',   score:null, win:false, bright:false } ] }
+];
+let PLAYERS = [
+{ name:'Иванов Алексей',   city:'Казань',          dept:'Отдел продаж' },
+{ name:'Петрова Мария',    city:'Москва',          dept:'Отдел маркетинга' },
+{ name:'Сидоров Дмитрий',  city:'Екатеринбург',    dept:'Отдел разработки' },
+{ name:'Козлова Анна',     city:'Воронеж',         dept:'Юридический отдел' },
+{ name:'Смирнов Игорь',    city:'Санкт-Петербург', dept:'Отдел аналитики' },
+{ name:'Васильева Ольга',  city:'Санкт-Петербург', dept:'HR-отдел' },
+{ name:'Николаев Павел',   city:'Москва',          dept:'Отдел продаж' },
+{ name:'Фёдорова Елена',   city:'Москва',          dept:'Отдел аналитики' },
+{ name:'Морозов Андрей',   city:'Новосибирск',     dept:'Отдел разработки' },
+{ name:'Волкова Татьяна',  city:'Екатеринбург',    dept:'Финансовый отдел' },
+{ name:'Зайцев Сергей',    city:'Новосибирск',     dept:'Отдел логистики' },
+{ name:'Соколова Ирина',   city:'Москва',          dept:'HR-отдел' },
+{ name:'Лебедев Максим',   city:'Москва',          dept:'Отдел логистики' },
+{ name:'Егорова Наталья',  city:'Казань',          dept:'Отдел маркетинга' },
+{ name:'Павлов Виктор',    city:'Нижний Новгород', dept:'Отдел аналитики' },
+{ name:'Крылова Дарья',    city:'Санкт-Петербург', dept:'Отдел маркетинга' },
+{ name:'Орлов Константин', city:'Москва',          dept:'Отдел разработки' },
+{ name:'Белова Светлана',  city:'Ростов-на-Дону',  dept:'Юридический отдел' },
+{ name:'Гусев Роман',      city:'Казань',          dept:'Отдел продаж' },
+{ name:'Тихонова Юлия',    city:'Самара',          dept:'Финансовый отдел' }
+];
 const STATUS_MAP = {
-  done:    { cls:'done',    label:'Проведена' },
-  planned: { cls:'planned', label:'Запланирована' },
-  moved:   { cls:'moved',   label:'Перенесена' }
+done:    { cls:'done',    label:'Проведена' },
+planned: { cls:'planned', label:'Запланирована' },
+moved:   { cls:'moved',   label:'Перенесена' }
 };
-
 /* ================== УТИЛИТЫ ================== */
 const fmt = n => Number(n).toLocaleString('ru-RU');
 const bonusOf = p => (p.win ? BONUS.win : 0) + (p.bright ? BONUS.bright : 0);
-const plural = (n, f) => {
-  const a = n % 10, b = n % 100;
-  if (a === 1 && b !== 11) return f[0];
-  if (a >= 2 && a <= 4 && (b < 10 || b >= 20)) return f[1];
-  return f[2];
+const plural = (n, forms) => {
+const a = Math.abs(n) % 100, b = a % 10;
+if (a > 10 && a < 20) return forms[2];
+if (b === 1) return forms[0];
+if (b >= 2 && b <= 4) return forms[1];
+return forms[2];
 };
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const yes = v => ['да','yes','true','1','+','x','х','✓','v','победа'].includes(String(v ?? '').trim().toLowerCase());
-
-const MONTHS = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
-
-/* Ищем значение в строке по нескольким возможным названиям колонки */
-function pick(row, names) {
-  for (const key in row) {
-    const k = key.trim().toLowerCase();
-    if (names.includes(k)) return row[key];
-  }
-  return '';
+const esc = s => String(s).replace(/[&<>"']/g, c =>
+({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+function toTime(iso) {
+if (!iso) return NaN;
+const s = String(iso).trim().replace(' ', 'T');
+const withTz = /(Z|[+-]\d{2}:?\d{2})$/.test(s) ? s : s + TZ;
+const t = new Date(withTz).getTime();
+return Number.isNaN(t) ? NaN : t;
 }
-
-/* Разбор даты: понимает 2026-08-06, 06.08.2026, 6 августа 2026 */
-function parseDate(raw) {
-  const s = String(raw ?? '').trim();
-  if (!s) return null;
-  let m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
-  if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
-  m = s.match(/^(\d{1,2})[.\/](\d{1,2})[.\/](\d{4})/);
-  if (m) return new Date(+m[3], +m[2] - 1, +m[1]);
-  m = s.toLowerCase().match(/^(\d{1,2})\s+([а-яё]+)\s+(\d{4})/);
-  if (m) {
-    const idx = MONTHS.findIndex(mo => mo.startsWith(m[2].slice(0, 4)));
-    if (idx >= 0) return new Date(+m[3], idx, +m[1]);
-  }
-  const d = new Date(s);
-  return isNaN(d) ? null : d;
+function parseScore(v) {
+if (v === null || v === undefined) return null;
+const raw = String(v).replace(/[\s\u00A0]/g, '').replace(',', '.');
+if (raw === '' || raw === '-' || raw === '—') return null;
+const n = Number(raw);
+return Number.isFinite(n) ? n : null;
 }
-
-function dateText(raw) {
-  const d = parseDate(raw);
-  if (!d) return String(raw ?? 'Дата уточняется');
-  return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
-}
-
-/* Момент начала игры (по времени из таблицы или 12:30 по умолчанию) */
-function gameStart(g) {
-  const d = parseDate(g.dateRaw);
-  if (!d) return null;
-  const t = String(g.time || GAME_TIME).match(/(\d{1,2})[:.](\d{2})/);
-  d.setHours(t ? +t[1] : 12, t ? +t[2] : 30, 0, 0);
-  return d;
-}
-
-function normStatus(raw, start) {
-  const s = String(raw ?? '').trim().toLowerCase();
-  if (['done','проведена','проведено','сыграна','завершена','completed','finished'].includes(s)) return 'done';
-  if (['moved','перенесена','перенос','переносится','rescheduled'].includes(s)) return 'moved';
-  if (['planned','запланирована','план','запланировано','upcoming','scheduled'].includes(s)) return 'planned';
-  return start && start.getTime() < Date.now() ? 'done' : 'planned';
-}
-
-/* ================== ЗАГРУЗКА ИЗ GOOGLE APPS SCRIPT ================== */
-
-/* Ищем значение в строке по нескольким возможным названиям колонки */
-function pick(row, names) {
-  for (const key in row) {
-    const k = key.trim().toLowerCase();
-    if (names.includes(k)) return row[key];
-  }
-  return '';
-}
-
-function parseGames(rows) {
-  const map = new Map();
-  rows.forEach(r => {
-    const player = String(pick(r, ['player','игрок','фио','участник','name','имя'])).trim();
-    const nRaw   = pick(r, ['game','игра','№','номер','номер игры','game_number','n']);
-    const n = parseInt(String(nRaw).replace(/\D/g, ''), 10);
-    if (!n || !player) return;
-
-    if (!map.has(n)) {
-      map.set(n, {
-        n,
-        dateRaw: pick(r, ['date','дата','iso','date_text','дата игры']),
-        time:    pick(r, ['time','время','начало']),
-        statusRaw: pick(r, ['status','статус','состояние']),
-        players: []
-      });
-    }
-    const g = map.get(n);
-    if (!g.dateRaw) g.dateRaw = pick(r, ['date','дата','iso','date_text','дата игры']);
-    if (!g.statusRaw) g.statusRaw = pick(r, ['status','статус','состояние']);
-
-    const scoreRaw = String(pick(r, ['score','баллы','очки','результат','points'])).replace(/[\s\u00A0]/g,'').replace(',', '.');
-    const score = scoreRaw === '' || isNaN(Number(scoreRaw)) ? null : Number(scoreRaw);
-
-    g.players.push({
-      name: player,
-      score,
-      win:    yes(pick(r, ['win','победа','winner','победитель'])),
-      bright: yes(pick(r, ['bright','яркий','яркий игрок','star','звезда']))
-    });
-  });
-
-  return [...map.values()].map(g => {
-    const start = gameStart(g);
-    return { ...g, date: dateText(g.dateRaw), start, status: normStatus(g.statusRaw, start) };
-  }).sort((a,b) => a.n - b.n);
-}
-
-function parsePlayers(rows) {
-  return rows.map(r => ({
-    name: String(pick(r, ['name','фио','игрок','участник','имя'])).trim(),
-    city: String(pick(r, ['city','город','локация'])).trim(),
-    dept: String(pick(r, ['dept','отдел','подразделение','department','департамент'])).trim()
-  })).filter(p => p.name);
-}
-
-function playersFromGames() {
-  const seen = new Map();
-  GAMES.forEach(g => g.players.forEach(p => { if (!seen.has(p.name)) seen.set(p.name, { name:p.name, city:'', dept:'' }); }));
-  return [...seen.values()];
-}
-
-async function loadAll() {
-  const bar = document.getElementById('loadBar');
-  bar.className = 'load-bar';
-  bar.innerHTML = '<span class="spinner"></span><span id="loadText">Загружаю данные из Google-таблицы…</span>';
-  
-  try {
-    if (SCRIPT_URL.includes('ВАШ_ДЛИННЫЙ_ID')) {
-      throw new Error('Необходимо вставить реальный URL веб-приложения в переменную SCRIPT_URL в начале кода');
-    }
-
-    const [gRes, pRes] = await Promise.all([
-      fetch(SCRIPT_URL + '?sheet=Games'),
-      fetch(SCRIPT_URL + '?sheet=Players')
-    ]);
-
-    if (!gRes.ok || !pRes.ok) throw new Error('Ошибка сети при загрузке данных');
-
-    const gRows = await gRes.json();
-    const pRows = await pRes.json();
-
-    if (!Array.isArray(gRows) || !Array.isArray(pRows)) throw new Error('Неверный формат ответа от скрипта');
-
-    GAMES = parseGames(gRows);
-    PLAYERS = parsePlayers(pRows);
-    
-    if (!PLAYERS.length) PLAYERS = playersFromGames();
-    else {
-      const known = new Set(PLAYERS.map(p => p.name));
-      playersFromGames().forEach(p => { if (!known.has(p.name)) PLAYERS.push(p); });
-    }
-    
-    render();
-    const now = new Date().toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit' });
-    document.getElementById('loadBar').innerHTML =
-      `<span>✅ Данные из таблицы загружены в ${now} · игр: ${GAMES.length} · игроков: ${PLAYERS.length}</span>
-       <button class="reload-btn" onclick="loadAll()">Обновить</button>`;
-  } catch (e) {
-    console.error(e);
-    document.getElementById('loadBar').className = 'load-bar error';
-    document.getElementById('loadBar').innerHTML =
-      `<span>⚠️ Не удалось загрузить таблицу: ${esc(e.message)}.</span>
-       <button class="reload-btn" onclick="loadAll()">Повторить</button>`;
-    render(); // Показываем локальные данные при ошибке
-  }
-}
-
 /* ================== СЧЁТЧИК ДНЕЙ ================== */
 let cdTimer = null;
 function renderCountdown() {
-  const host = document.getElementById('countdownHost');
-  const now = Date.now();
-  const next = GAMES
-    .filter(g => g.status !== 'done' && g.start && g.start.getTime() > now)
-    .sort((a,b) => a.start - b.start)[0];
-
-  clearInterval(cdTimer);
-
-  if (!next) {
-    host.innerHTML = `<div class="countdown finished"><div class="cd-info">
-      <div class="cd-label">Сезон 2</div>
-      <div class="cd-title">🏁 Все игры сезона проведены</div>
-      <div class="cd-sub">Итоги — во вкладке «Общий рейтинг», результаты игр — в «Прошедших играх»</div>
-    </div></div>`;
-    return null;
-  }
-
-  const names = next.players.map(p => esc(p.name.split(' ')[0])).join(', ');
-  host.innerHTML = `<div class="countdown">
-      <div class="cd-info">
-        <div class="cd-label">До следующей игры</div>
-        <div class="cd-title">Игра ${next.n} · ${esc(next.date)}</div>
-        <div class="cd-sub">🕧 ${esc(next.time || GAME_TIME)} МСК${names ? ' · участники: ' + names : ''}</div>
-      </div>
-      <div class="cd-timer">
-        <div class="cd-unit"><div class="cd-num" id="cdD">0</div><div class="cd-cap" id="cdDc">дней</div></div>
-        <div class="cd-unit"><div class="cd-num" id="cdH">0</div><div class="cd-cap" id="cdHc">часов</div></div>
-        <div class="cd-unit"><div class="cd-num" id="cdM">0</div><div class="cd-cap" id="cdMc">минут</div></div>
-      </div>
-    </div>`;
-
-  const target = next.start.getTime();
-  const tick = () => {
-    const diff = Math.max(0, target - Date.now());
-    const d = Math.floor(diff / 86400000);
-    const h = Math.floor(diff / 3600000) % 24;
-    const m = Math.floor(diff / 60000) % 60;
-    document.getElementById('cdD').textContent = d;
-    document.getElementById('cdH').textContent = h;
-    document.getElementById('cdM').textContent = m;
-    document.getElementById('cdDc').textContent = plural(d,['день','дня','дней']);
-    document.getElementById('cdHc').textContent = plural(h,['час','часа','часов']);
-    document.getElementById('cdMc').textContent = plural(m,['минута','минуты','минут']);
-    if (diff === 0) { clearInterval(cdTimer); render(); }
-  };
-  tick();
-  cdTimer = setInterval(tick, 1000);
-  return next.n;
+const host = document.getElementById('countdownHost');
+const now = Date.now();
+clearInterval(cdTimer);
+cdTimer = null;
+const next = GAMES
+.filter(g => g.status !== 'done' && Number.isFinite(toTime(g.iso)) && toTime(g.iso) > now)
+.sort((a, b) => toTime(a.iso) - toTime(b.iso))[0];
+if (!next) {
+host.innerHTML =
+'<div class="countdown finished"><div class="cd-info">' +
+'<div class="cd-label">Сезон 2</div>' +
+'<div class="cd-title">🏁 Все игры сезона проведены</div>' +
+'<div class="cd-sub">Смотрите итоговый рейтинг во вкладке «Общий рейтинг»</div>' +
+'</div></div>';
+return null;
 }
-
-/* ================== КАРТОЧКА ИГРЫ ================== */
-function cardHTML(g, isNext, archived) {
-  const st = STATUS_MAP[g.status] || STATUS_MAP.planned;
-  const winner = g.players.find(p => p.win);
-  return `<article class="game-card${isNext ? ' next-game' : ''}${archived ? ' archived' : ''}">
-    <div class="card-head">
-      <div class="game-number">Игра ${g.n} / ${GAMES.length}</div>
-      <div class="game-date">${esc(g.date)}</div>
-      <div class="game-time">🕧 ${esc(g.time || GAME_TIME)} МСК</div>
-      ${archived && winner ? `<div class="winner-line">🏆 Победитель: ${esc(winner.name)}</div>` : ''}
-      <span class="status ${st.cls}">${st.label}</span>
-    </div>
-    <div class="players-list">
-      ${[...g.players].sort((a,b) => (b.score ?? -1) - (a.score ?? -1)).map(p => {
-        const b = bonusOf(p);
-        const total = p.score === null ? null : p.score + b;
-        return `<div class="player-row${p.win ? ' winner' : ''}" data-name="${esc(p.name.toLowerCase())}">
-          <span class="player-name">${esc(p.name)}</span>
-          ${p.win ? `<span class="award" data-tip="Победа в игре · +${fmt(BONUS.win)} баллов (уже в сумме)">🏆</span>` : ''}
-          ${p.bright ? `<span class="award" data-tip="Яркий игрок · +${fmt(BONUS.bright)} баллов (уже в сумме)">⭐</span>` : ''}
-          <span class="score-wrap">
-            <span class="player-score ${total === null ? 'empty' : ''}">${total === null ? '—' : fmt(total)}</span>
-            ${total !== null && b > 0 ? `<span class="score-base">${fmt(p.score)} + <b>${fmt(b)}</b></span>` : ''}
-          </span>
-        </div>`;
-      }).join('')}
-    </div>
-  </article>`;
+const names = next.players.map(p => esc(String(p.name).split(' ')[0])).join(', ');
+host.innerHTML =
+'<div class="countdown">' +
+'<div class="cd-info">' +
+'<div class="cd-label">До следующей игры</div>' +
+'<div class="cd-title">Игра ' + next.n + ' · ' + esc(next.date) + '</div>' +
+'<div class="cd-sub"> 12:30 МСК · участники: ' + names + '</div>' +
+'</div>' +
+'<div class="cd-timer">' +
+'<div class="cd-unit"><div class="cd-num" id="cdD">0</div><div class="cd-cap" id="cdDc">дней</div></div>' +
+'<div class="cd-unit"><div class="cd-num" id="cdH">0</div><div class="cd-cap" id="cdHc">часов</div></div>' +
+'<div class="cd-unit"><div class="cd-num" id="cdM">0</div><div class="cd-cap" id="cdMc">минут</div></div>' +
+'</div>' +
+'</div>';
+const target = toTime(next.iso);
+const elD = document.getElementById('cdD'), elDc = document.getElementById('cdDc');
+const elH = document.getElementById('cdH'), elHc = document.getElementById('cdHc');
+const elM = document.getElementById('cdM'), elMc = document.getElementById('cdMc');
+const tick = () => {
+const diff = Math.max(0, target - Date.now());
+const d = Math.floor(diff / 86400000);
+const h = Math.floor(diff / 3600000) % 24;
+const m = Math.floor(diff / 60000) % 60;
+elD.textContent = d; elDc.textContent = plural(d, ['день','дня','дней']);
+elH.textContent = h; elHc.textContent = plural(h, ['час','часа','часов']);
+elM.textContent = m; elMc.textContent = plural(m, ['минута','минуты','минут']);
+if (diff === 0) { clearInterval(cdTimer); cdTimer = null; render(); }
+};
+tick();
+cdTimer = setInterval(tick, 1000);
+return next.n;
 }
-
-/* ================== РАСПИСАНИЕ + ПРОШЕДШИЕ ================== */
+document.addEventListener('visibilitychange', () => {
+if (!document.hidden && cdTimer) render();
+});
+/* ================== КАРТОЧКИ ИГР ================== */
 function renderGames(nextN) {
-  const upcoming = GAMES.filter(g => g.status !== 'done').sort((a,b) => a.n - b.n);
-  const past     = GAMES.filter(g => g.status === 'done').sort((a,b) => b.n - a.n);
-
-  document.getElementById('gamesGrid').innerHTML =
-    upcoming.map(g => cardHTML(g, g.n === nextN, false)).join('') ||
-    `<div class="empty-state">Впереди игр нет — сезон полностью сыгран 🏁</div>`;
-
-  document.getElementById('archiveGrid').innerHTML =
-    past.map(g => cardHTML(g, false, true)).join('') ||
-    `<div class="empty-state">Пока не проведено ни одной игры. Здесь появятся результаты 🗄</div>`;
-
-  document.getElementById('cntUpcoming').textContent = upcoming.length;
-  document.getElementById('cntArchive').textContent  = past.length;
-  renderArchiveSummary(past);
+const grid = document.getElementById('gamesGrid');
+grid.innerHTML = '';
+GAMES.forEach(g => {
+const st = STATUS_MAP[g.status] || STATUS_MAP.planned;
+const card = document.createElement('article');
+card.className = 'game-card' + (g.n === nextN ? ' next-game' : '');
+const rows = g.players.map(p => {
+const b = bonusOf(p);
+const hasScore = p.score !== null && p.score !== undefined;
+const total = hasScore ? p.score + b : null;
+return '' +
+'<div class="player-row" data-name="' + esc(String(p.name).toLowerCase()) + '">' +
+'<span class="player-name">' + esc(p.name) + '</span>' +
+(p.win ? '<span class="award" tabindex="0" data-tip="Победа в игре · +' + fmt(BONUS.win) + ' баллов (уже включено в сумму)">🏆</span>' : '') +
+(p.bright ? '<span class="award" tabindex="0" data-tip="Яркий игрок · +' + fmt(BONUS.bright) + ' баллов (уже включено в сумму)">⭐</span>' : '') +
+'<span class="score-wrap">' +
+'<span class="player-score' + (total === null ? ' empty' : '') + '">' + (total === null ? '—' : fmt(total)) + '</span>' +
+(total !== null && b > 0 ? '<span class="score-base">' + fmt(p.score) + ' + <b>' + fmt(b) + '</b></span>' : '') +
+'</span>' +
+'</div>';
+}).join('');
+card.innerHTML =
+'<div class="card-head">' +
+'<div class="game-number">Игра ' + g.n + ' / ' + GAMES.length + '</div>' +
+'<div class="game-date">' + esc(g.date) + '</div>' +
+'<div class="game-time">🕧 12:30 МСК</div>' +
+'<span class="status ' + st.cls + '">' + st.label + '</span>' +
+'</div>' +
+'<div class="players-list">' + rows + '</div>';
+grid.appendChild(card);
+});
 }
-
-function renderArchiveSummary(past) {
-  const total = GAMES.length;
-  const pct = total ? Math.round(past.length / total * 100) : 0;
-  const all = past.flatMap(g => g.players.filter(p => p.score !== null).map(p => ({ p, v: p.score + bonusOf(p) })));
-  const best = all.length ? Math.max(...all.map(x => x.v)) : 0;
-  const bestPlayer = all.find(x => x.v === best)?.p;
-  const participants = new Set(past.flatMap(g => g.players.map(p => p.name))).size;
-
-  document.getElementById('archiveSummary').innerHTML = `<div class="archive-summary">
-    <div class="as-top">
-      <span class="as-title">🗄 Прошедшие игры сезона</span>
-      <span class="as-count">${past.length} из ${total} игр · ${pct}%</span>
-    </div>
-    <div class="progress"><span style="width:${pct}%"></span></div>
-    <div class="as-stats">
-      <div class="as-stat"><b>${participants}</b>${plural(participants,['участник сыграл','участника сыграли','участников сыграли'])}</div>
-      <div class="as-stat"><b>${fmt(best)}</b>лучший результат игры${bestPlayer ? ' · ' + esc(bestPlayer.name) : ''}</div>
-      <div class="as-stat"><b>${total - past.length}</b>${plural(total - past.length,['игра впереди','игры впереди','игр впереди'])}</div>
-    </div>
-  </div>`;
-}
-
 /* ================== РЕЙТИНГ ================== */
 function buildRating() {
-  const acc = {};
-  GAMES.forEach(g => g.players.forEach(p => {
-    if (p.score === null) return;
-    const a = acc[p.name] || (acc[p.name] = { base:0, bonus:0, games:0 });
-    a.base += p.score; a.bonus += bonusOf(p); a.games += 1;
-  }));
-  return PLAYERS.map(p => {
-    const a = acc[p.name] || { base:0, bonus:0, games:0 };
-    return { ...p, ...a, points: a.base + a.bonus };
-  }).sort((x,y) => y.points - x.points || x.name.localeCompare(y.name,'ru'));
+const acc = {};
+GAMES.forEach(g => g.players.forEach(p => {
+if (!p.name) return;
+if (p.score === null || p.score === undefined) return;
+const key = String(p.name).trim();
+const a = acc[key] || (acc[key] = { base: 0, bonus: 0, games: 0 });
+a.base  += Number(p.score) || 0;
+a.bonus += bonusOf(p);
+a.games += 1;
+}));
+const info = {};
+PLAYERS.forEach(p => { info[String(p.name).trim()] = p; });
+Object.keys(acc).forEach(name => {
+if (!info[name]) info[name] = { name, city: '—', dept: '—' };
+});
+return Object.keys(info).map(name => {
+const a = acc[name] || { base: 0, bonus: 0, games: 0 };
+const p = info[name];
+return {
+name, city: p.city || '—', dept: p.dept || '—',
+base: a.base, bonus: a.bonus, games: a.games,
+points: a.base + a.bonus
+};
+}).sort((x, y) =>
+y.points - x.points ||
+y.games - x.games ||
+x.name.localeCompare(y.name, 'ru')
+);
 }
-
 function renderRating() {
-  const body = document.getElementById('ratingBody');
-  const list = buildRating();
-  body.innerHTML = '';
-  if (!list.length) {
-    body.innerHTML = `<tr><td colspan="5"><div class="empty-state">Данных пока нет 📊</div></td></tr>`;
-    return;
-  }
-  list.forEach((p, i) => {
-    const tr = document.createElement('tr');
-    tr.style.setProperty('--i', i);
-    tr.dataset.name = p.name.toLowerCase();
-    if (i < PLAYOFF_SIZE) tr.classList.add('top12');
-    if (i === 0) tr.classList.add('rank-1');
-    const isCutoff = i === PLAYOFF_SIZE - 1 && list.length > PLAYOFF_SIZE;
-    if (isCutoff) tr.classList.add('cutoff');
-    tr.innerHTML = `
-      <td class="rank-cell"><span class="rank-badge">${i + 1}</span></td>
-      <td><span class="fio">${esc(p.name)}</span><br>
-          <span class="games-played">${p.games} ${plural(p.games,['игра','игры','игр'])}</span>
-          ${isCutoff ? '<span class="cutoff-note">↑ граница плей-офф</span>' : ''}</td>
-      <td class="meta">${esc(p.city) || '—'}</td>
-      <td class="meta">${esc(p.dept) || '—'}</td>
-      <td class="points-cell">
-        <span class="points-total">${fmt(p.points)}</span>
-        ${p.bonus ? `<span class="points-bonus">вкл. бонус +${fmt(p.bonus)}</span>` : ''}
-      </td>`;
-    body.appendChild(tr);
-  });
+const body = document.getElementById('ratingBody');
+body.innerHTML = '';
+buildRating().forEach((p, i) => {
+const tr = document.createElement('tr');
+tr.style.setProperty('--i', Math.min(i, 20));
+tr.dataset.name = p.name.toLowerCase();
+if (i < TOP_N) tr.classList.add('top12');
+if (i === 0) tr.classList.add('rank-1');
+tr.innerHTML =
+'<td class="rank-cell"><span class="rank-badge">' + (i + 1) + '</span></td>' +
+'<td><span class="fio">' + esc(p.name) + '</span><br>' +
+'<span class="games-played">' + p.games + ' ' + plural(p.games, ['игра','игры','игр']) + '</span></td>' +
+'<td class="meta">' + esc(p.city) + '</td>' +
+'<td class="meta">' + esc(p.dept) + '</td>' +
+'<td class="points-cell">' +
+'<span class="points-total">' + fmt(p.points) + '</span>' +
+(p.bonus ? '<span class="points-bonus">вкл. бонус +' + fmt(p.bonus) + '</span>' : '') +
+'</td>';
+body.appendChild(tr);
+});
 }
-
-/* ================== ПОДСКАЗКИ ПОВЕРХ ================== */
-const tip = document.getElementById('floatTip');
+/* ================== ПОДСКАЗКИ ПОВЕРХ ВСЕГО ================== */
+const tipBox  = document.getElementById('tipBox');
+const tipText = document.getElementById('tipText');
+const GAP = 10, EDGE = 12;
+let tipOwner = null, tapTimer = null;
+function placeTip(el) {
+const r  = el.getBoundingClientRect();
+const tw = tipBox.offsetWidth;
+const th = tipBox.offsetHeight;
+const vw = document.documentElement.clientWidth;
+const vh = document.documentElement.clientHeight;
+let place, top;
+if (r.top >= th + GAP + EDGE) {
+place = 'place-top';
+top = r.top - th - GAP;
+} else if (vh - r.bottom >= th + GAP + EDGE) {
+place = 'place-bottom';
+top = r.bottom + GAP;
+} else {
+place = 'place-side';
+top = Math.min(Math.max(EDGE, r.top + r.height / 2 - th / 2), Math.max(EDGE, vh - th - EDGE));
+}
+let left;
+if (place === 'place-side') {
+left = (r.right + GAP + tw <= vw - EDGE) ? r.right + GAP : r.left - tw - GAP;
+} else {
+left = r.left + r.width / 2 - tw / 2;
+}
+left = Math.min(Math.max(EDGE, left), Math.max(EDGE, vw - tw - EDGE));
+tipBox.classList.remove('place-top', 'place-bottom', 'place-side');
+tipBox.classList.add(place);
+tipBox.style.transform = 'translate(' + Math.round(left) + 'px,' + Math.round(top) + 'px)';
+const ax = Math.min(Math.max(12, r.left + r.width / 2 - left), Math.max(12, tw - 12));
+tipBox.style.setProperty('--ax', ax + 'px');
+}
 function showTip(el) {
-  tip.textContent = el.dataset.tip;
-  tip.classList.add('visible');
-  const r = el.getBoundingClientRect(), t = tip.getBoundingClientRect();
-  let left = Math.max(10, Math.min(r.left + r.width/2 - t.width/2, window.innerWidth - t.width - 10));
-  let top = r.top - t.height - 12;
-  const below = top < 8;
-  if (below) top = r.bottom + 12;
-  tip.classList.toggle('below', below);
-  tip.style.left = left + 'px';
-  tip.style.top = top + 'px';
-  tip.style.setProperty('--arrow', (r.left + r.width/2 - left) + 'px');
+if (!el || !el.dataset.tip) return;
+tipOwner = el;
+tipText.textContent = el.dataset.tip;
+tipBox.classList.add('visible');
+requestAnimationFrame(() => {
+if (tipOwner !== el) return;
+placeTip(el);
+requestAnimationFrame(() => { if (tipOwner === el) placeTip(el); });
+});
 }
-const hideTip = () => tip.classList.remove('visible');
-document.addEventListener('mouseover', e => { const a = e.target.closest('.award'); if (a) showTip(a); });
-document.addEventListener('mouseout',  e => { if (e.target.closest('.award')) hideTip(); });
-document.addEventListener('click',     e => { const a = e.target.closest('.award'); if (a) { showTip(a); setTimeout(hideTip, 2600); } });
-window.addEventListener('scroll', hideTip, true);
-
+function hideTip() {
+tipOwner = null;
+clearTimeout(tapTimer);
+tipBox.classList.remove('visible');
+}
+document.addEventListener('pointerover', e => {
+const a = e.target.closest && e.target.closest('.award');
+if (a && a !== tipOwner) showTip(a);
+});
+document.addEventListener('pointerout', e => {
+const a = e.target.closest && e.target.closest('.award');
+const to = e.relatedTarget;
+if (a && !(to && to.closest && to.closest('.award'))) hideTip();
+});
+document.addEventListener('focusin', e => {
+const a = e.target.closest && e.target.closest('.award');
+if (a) showTip(a);
+});
+document.addEventListener('focusout', e => {
+if (e.target.closest && e.target.closest('.award')) hideTip();
+});
+document.addEventListener('click', e => {
+const a = e.target.closest && e.target.closest('.award');
+clearTimeout(tapTimer);
+if (a) { showTip(a); tapTimer = setTimeout(hideTip, 3000); }
+else hideTip();
+});
+document.addEventListener('scroll', () => { if (tipOwner) placeTip(tipOwner); }, true);
+window.addEventListener('resize', hideTip);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') hideTip(); });
 /* ================== ВКЛАДКИ ================== */
 const tabBtns = document.querySelectorAll('.tab-btn');
 const indicator = document.getElementById('tabIndicator');
-const moveIndicator = btn => { indicator.style.left = btn.offsetLeft + 'px'; indicator.style.width = btn.offsetWidth + 'px'; };
-tabBtns.forEach(btn => btn.addEventListener('click', () => {
-  tabBtns.forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  moveIndicator(btn);
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
-}));
-window.addEventListener('load',   () => moveIndicator(document.querySelector('.tab-btn.active')));
-window.addEventListener('resize', () => moveIndicator(document.querySelector('.tab-btn.active')));
-
-/* ================== ПОИСК ================== */
-function setupCardSearch(inputId, clearId, hintId, gridId, noId, word) {
-  const input = document.getElementById(inputId);
-  const clear = document.getElementById(clearId);
-  const hint  = document.getElementById(hintId);
-  const grid  = document.getElementById(gridId);
-  const no    = document.getElementById(noId);
-  const run = () => {
-    const q = input.value.trim().toLowerCase();
-    clear.style.display = q ? 'block' : 'none';
-    let visible = 0;
-    grid.querySelectorAll('.game-card').forEach(card => {
-      let hit = false;
-      card.querySelectorAll('.player-row').forEach(row => {
-        const m = q && row.dataset.name.includes(q);
-        row.classList.toggle('search-hit', Boolean(m));
-        if (m) hit = true;
-      });
-      const show = !q || hit;
-      card.classList.toggle('hidden-by-search', !show);
-      if (show) visible++;
-    });
-    no.classList.toggle('visible', Boolean(q) && visible === 0);
-    hint.innerHTML = q && visible ? `${word}: <span class="found">${visible}</span>` : '';
-  };
-  input.addEventListener('input', run);
-  clear.addEventListener('click', () => { input.value = ''; run(); input.focus(); });
-  return run;
+function moveIndicator(btn) {
+if (!btn) return;
+indicator.style.left = btn.offsetLeft + 'px';
+indicator.style.width = btn.offsetWidth + 'px';
 }
-const runGames   = setupCardSearch('searchGames','clearGames','hintGames','gamesGrid','noGames','Найдено игр');
-const runArchive = setupCardSearch('searchArchive','clearArchive','hintArchive','archiveGrid','noArchive','Найдено игр');
-
+tabBtns.forEach(btn => btn.addEventListener('click', () => {
+hideTip();
+tabBtns.forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+moveIndicator(btn);
+document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+const panel = document.getElementById('panel-' + btn.dataset.tab);
+if (panel) panel.classList.add('active');
+}));
+const activeBtn = () => document.querySelector('.tab-btn.active');
+moveIndicator(activeBtn());
+window.addEventListener('load',   () => moveIndicator(activeBtn()));
+window.addEventListener('resize', () => moveIndicator(activeBtn()));
+if (document.fonts && document.fonts.ready) {
+document.fonts.ready.then(() => moveIndicator(activeBtn()));
+}
+/* ================== ПОИСК ================== */
+const searchGames = document.getElementById('searchGames');
+const clearGames  = document.getElementById('clearGames');
+const hintGames   = document.getElementById('hintGames');
+const noGames     = document.getElementById('noGames');
+function filterGames() {
+const q = searchGames.value.trim().toLowerCase().replace(/ё/g, 'е');
+clearGames.style.display = q ? 'block' : 'none';
+let visible = 0;
+document.querySelectorAll('.game-card').forEach(card => {
+let hit = false;
+card.querySelectorAll('.player-row').forEach(row => {
+const name = row.dataset.name.replace(/ё/g, 'е');
+const m = Boolean(q) && name.includes(q);
+row.classList.toggle('search-hit', m);
+if (m) hit = true;
+});
+const show = !q || hit;
+card.classList.toggle('hidden-by-search', !show);
+if (show) visible++;
+});
+noGames.classList.toggle('visible', Boolean(q) && visible === 0);
+hintGames.innerHTML = (q && visible)
+? 'Найдено ' + plural(visible, ['игра','игры','игр']) + ': <span class="found">' + visible + '</span>'
+: '';
+}
+searchGames.addEventListener('input', filterGames);
+clearGames.addEventListener('click', () => { searchGames.value = ''; filterGames(); searchGames.focus(); });
 const searchRating = document.getElementById('searchRating');
 const clearRating  = document.getElementById('clearRating');
 const hintRating   = document.getElementById('hintRating');
 const noRating     = document.getElementById('noRating');
 function filterRating() {
-  const q = searchRating.value.trim().toLowerCase();
-  clearRating.style.display = q ? 'block' : 'none';
-  let visible = 0;
-  document.querySelectorAll('#ratingBody tr').forEach(tr => {
-    if (!tr.dataset.name) return;
-    const m = !q || tr.dataset.name.includes(q);
-    tr.classList.toggle('hidden-by-search', !m);
-    tr.classList.toggle('search-hit', Boolean(q) && m);
-    if (m) visible++;
-  });
-  noRating.classList.toggle('visible', Boolean(q) && visible === 0);
-  hintRating.innerHTML = q && visible ? `Найдено игроков: <span class="found">${visible}</span>` : '';
+const q = searchRating.value.trim().toLowerCase().replace(/ё/g, 'е');
+clearRating.style.display = q ? 'block' : 'none';
+let visible = 0;
+document.querySelectorAll('#ratingBody tr').forEach(tr => {
+const name = tr.dataset.name.replace(/ё/g, 'е');
+const m = !q || name.includes(q);
+tr.classList.toggle('hidden-by-search', !m);
+tr.classList.toggle('search-hit', Boolean(q) && m);
+if (m) visible++;
+});
+noRating.classList.toggle('visible', Boolean(q) && visible === 0);
+hintRating.innerHTML = (q && visible)
+? 'Найдено ' + plural(visible, ['игрок','игрока','игроков']) + ': <span class="found">' + visible + '</span>'
+: '';
 }
 searchRating.addEventListener('input', filterRating);
-clearRating.addEventListener('click', () => { searchRating.value=''; filterRating(); searchRating.focus(); });
-
-/* ================== СТАРТ ================== */
+clearRating.addEventListener('click', () => { searchRating.value = ''; filterRating(); searchRating.focus(); });
+/* ================== ОБЩАЯ ОТРИСОВКА ================== */
 function render() {
-  const nextN = renderCountdown();
-  renderGames(nextN);
-  renderRating();
-  runGames(); runArchive(); filterRating();
+hideTip();
+const nextN = renderCountdown();
+renderGames(nextN);
+renderRating();
+filterGames();
+filterRating();
 }
-loadAll();
-setInterval(loadAll, 5 * 60 * 1000); // автообновление каждые 5 минут
+render();
+/* ================== ЗАГРУЗКА ИЗ GOOGLE APPS SCRIPT ================== */
+const YES = ['да','yes','true','1','+','x','х','✓','v','истина'];
+const yes = v => YES.includes(String(v === undefined || v === null ? '' : v).trim().toLowerCase());
+const STATUS_ALIAS = {
+'проведена':'done', 'сыграна':'done', 'done':'done',
+'запланирована':'planned', 'план':'planned', 'planned':'planned',
+'перенесена':'moved', 'перенос':'moved', 'moved':'moved'
+};
+async function loadFromSheet() {
+const note = document.getElementById('loadNote');
+if (!SCRIPT_URL || SCRIPT_URL.indexOf('ВАШ') === 0) return;
+note.textContent = 'Обновляем данные из таблицы…';
+try {
+const [gRows, pRows] = await Promise.all([
+fetch(SCRIPT_URL + '?sheet=Games').then(r => {
+if (!r.ok) throw new Error('Лист Games: HTTP ' + r.status);
+return r.json();
+}),
+fetch(SCRIPT_URL + '?sheet=Players').then(r => {
+if (!r.ok) throw new Error('Лист Players: HTTP ' + r.status);
+return r.json();
+})
+]);
+if (!Array.isArray(gRows) || !Array.isArray(pRows)) throw new Error('Неверный формат ответа');
+const map = new Map();
+gRows.forEach(r => {
+const n = Number(String(r.game || '').trim());
+const player = String(r.player || '').trim();
+if (!n || !player) return;
+if (!map.has(n)) {
+map.set(n, {
+n: n,
+date: String(r.date_text || '').trim() || ('Игра ' + n),
+iso: String(r.iso || '').trim(),
+status: STATUS_ALIAS[String(r.status || '').trim().toLowerCase()] || 'planned',
+players: []
+});
+}
+map.get(n).players.push({
+name: player,
+score: parseScore(r.score),
+win: yes(r.win),
+bright: yes(r.bright)
+});
+});
+const games = Array.from(map.values()).sort((a, b) => a.n - b.n);
+const players = pRows
+.filter(r => r && String(r.name || '').trim())
+.map(r => ({
+name: String(r.name).trim(),
+city: String(r.city || '').trim() || '—',
+dept: String(r.dept || '').trim() || '—'
+}));
+if (!games.length) throw new Error('Лист Games пуст или нет колонок game/player');
+GAMES = games;
+if (players.length) PLAYERS = players;
+render();
+note.textContent = 'Данные обновлены: ' + new Date().toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit' });
+} catch (e) {
+console.error('Не удалось загрузить данные из таблицы, показаны локальные:', e);
+note.textContent = 'Не удалось загрузить таблицу — показаны сохранённые данные';
+}
+}
+loadFromSheet();
+setInterval(loadFromSheet, 5 * 60 * 1000);
 </script>
 </body>
 </html>
