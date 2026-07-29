@@ -156,16 +156,51 @@ header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 8
 .sp-progress-text { font-family:var(--font-head); font-weight:800; color:var(--eos-red); font-size:1.1rem; font-variant-numeric:tabular-nums; }
 .sp-bar-wrap { position:relative; height:12px; border-radius:12px; background:rgba(44,62,80,.08); overflow:visible; margin:30px 0 14px; }
 .sp-bar { height:100%; border-radius:12px; background:linear-gradient(90deg,var(--eos-dark-red),var(--eos-red)); transition:width 1.2s var(--ease); }
-.sp-markers { position:absolute; top:50%; left:0; right:0; transform:translateY(-50%); display:flex; justify-content:space-between; pointer-events:none; }
-.sp-marker { position:relative; width:28px; height:28px; display:flex; align-items:center; justify-content:center; }
+.sp-markers { 
+  position:absolute; 
+  top:50%; 
+  left:0; 
+  right:0; 
+  transform:translateY(-50%); 
+  display:flex; 
+  justify-content:space-between; 
+  pointer-events:none;
+}
+.sp-marker { position:relative; width:100px; height:28px; display:flex; align-items:center; justify-content:center; }
 .sp-marker::before { content:''; position:absolute; width:14px; height:14px; border-radius:50%; background:var(--white);
   border:3px solid rgba(44,62,80,.15); transition:all .4s var(--ease); z-index:2; }
 .sp-marker.done::before { background:var(--eos-red); border-color:var(--eos-red); box-shadow:0 0 0 4px rgba(227,6,19,.15); }
 .sp-marker.current::before { background:var(--white); border-color:var(--eos-red); border-width:3px;
   box-shadow:0 0 0 4px rgba(227,6,19,.25); animation:pulseMarker 2s var(--ease) infinite; }
 @keyframes pulseMarker { 0%,100%{box-shadow:0 0 0 4px rgba(227,6,19,.25);} 50%{box-shadow:0 0 0 8px rgba(227,6,19,0);} }
-.sp-marker-label { position:absolute; top:22px; left:50%; transform:translateX(-50%); white-space:nowrap;
-  font-family:var(--font-head); font-size:.72rem; font-weight:600; color:#7C8894; text-align:center; }
+.sp-marker-label { 
+  position:absolute; 
+  top:22px; 
+  left:50%; 
+  transform:translateX(-50%); 
+  white-space:nowrap;
+  font-family:var(--font-head); 
+  font-size:.68rem; 
+  font-weight:600; 
+  color:#7C8894; 
+  text-align:center; 
+  width:120%; 
+}
+
+/* Первый маркер - текст сдвигаем вправо, чтобы не вылезал за левый край */
+.sp-marker:first-child .sp-marker-label {
+  left:0;
+  transform:translateX(0);
+  text-align:left;
+}
+
+/* Последний маркер - текст сдвигаем влево, чтобы не вылезал за правый край */
+.sp-marker:last-child .sp-marker-label {
+  left:auto;
+  right:0;
+  transform:translateX(0);
+  text-align:right;
+}
 .sp-marker.current .sp-marker-label { color:var(--eos-red); font-weight:700; }
 .sp-marker.done .sp-marker-label { color:var(--green); }
 .sp-stage-info { text-align:center; padding:14px 20px; margin-top:22px; border-radius:14px;
@@ -277,8 +312,6 @@ tr.top12 .rank-badge { background:linear-gradient(135deg,#F3DFAE,var(--gold-stri
 @keyframes goldGlow { 0%,100%{box-shadow:0 2px 8px rgba(230,200,138,.45);} 50%{box-shadow:0 2px 14px rgba(230,200,138,.85);} }
 tr.rank-1 .rank-badge { background:linear-gradient(135deg,#FFE9A8,#E8B84B); font-size:.95rem; }
 tr.cutoff td { border-bottom:2px dashed rgba(227,6,19,.5); }
-.cutoff-note { font-family:var(--font-head); font-size:.66rem; font-weight:700; letter-spacing:.14em;
-  text-transform:uppercase; color:var(--eos-red); display:block; margin-top:6px; }
 .fio { font-family:var(--font-head); font-weight:600; }
 .meta { color:#7C8894; font-weight:500; }
 .games-played { color:#9AA7B2; font-weight:600; font-size:.84rem; }
@@ -298,7 +331,7 @@ footer .dot { color:var(--eos-red); }
   .countdown { padding:22px; }
   .cd-unit { min-width:62px; }
   .cd-num { font-size:1.35rem; }
- thead th:nth-child(3), tbody td:nth-child(3) { display:none; }
+  thead th:nth-child(3), tbody td:nth-child(3) { display:none; }
 }
 </style>
 </head>
@@ -338,7 +371,6 @@ footer .dot { color:var(--eos-red); }
   </section>
 
   <section class="tab-panel" id="panel-archive">
-    <!-- ЗДЕСЬ ТЕПЕРЬ ПУТЬ СЕЗОНА -->
     <div id="seasonPath"></div>
     
     <div class="search-box">
@@ -370,11 +402,11 @@ footer .dot { color:var(--eos-red); }
         <tbody id="ratingBody"></tbody>
       </table>
     </div>
-    <div class="no-results" id="noRating">Игрок не найден 🤷</div>
-    <p class="bonus-note">Баллы = сумма набранного в играх + автоматические бонусы: 🏆 победа +1000, ⭐ яркий игрок +500</p>
+    <div class="no-results" id="noRating">Игрок не найден </div>
+    <p class="bonus-note">Баллы = сумма набранного в играх + автоматические бонусы:  победа +1000, ⭐ яркий игрок +500</p>
   </section>
 
-</div> <!-- закрывающий div container (исправлено: убран лишний </div>) -->
+</div>
 
 <div class="load-bar" id="loadBar"><span class="spinner"></span><span id="loadText">Загружаю данные из Google-таблицы…</span></div>
 
@@ -415,7 +447,6 @@ const yes = v => ['да','yes','true','1','+','x','х','✓','v','победа']
 
 const MONTHS = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
 
-/* Ищем значение в строке по нескольким возможным названиям колонки */
 function pick(row, names) {
   for (const key in row) {
     const k = key.trim().toLowerCase();
@@ -424,7 +455,6 @@ function pick(row, names) {
   return '';
 }
 
-/* Разбор даты */
 function parseDate(raw) {
   const s = String(raw ?? '').trim();
   if (!s) return null;
@@ -450,8 +480,35 @@ function dateText(raw) {
 function gameStart(g) {
   const d = parseDate(g.dateRaw);
   if (!d) return null;
-  const t = String(g.time || GAME_TIME).match(/(\d{1,2})[:.](\d{2})/);
-  d.setHours(t ? +t[1] : 12, t ? +t[2] : 30, 0, 0);
+  
+  let timeStr = '';
+  
+  if (g.time) {
+    timeStr = String(g.time).trim();
+  }
+  
+  if (!timeStr && g.dateRaw) {
+    const dateStr = String(g.dateRaw);
+    const timeMatch = dateStr.match(/(\d{1,2})[:.](\d{2})(?::\d{2})?/);
+    if (timeMatch) {
+      timeStr = `${timeMatch[1]}:${timeMatch[2]}`;
+    }
+  }
+  
+  if (timeStr) {
+    const t = timeStr.match(/(\d{1,2})[:.](\d{2})/);
+    if (t) {
+      const hours = parseInt(t[1], 10);
+      const minutes = parseInt(t[2], 10);
+      
+      if (hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59) {
+        d.setHours(hours, minutes, 0, 0);
+        return d;
+      }
+    }
+  }
+  
+  d.setHours(12, 30, 0, 0);
   return d;
 }
 
@@ -473,10 +530,21 @@ function parseGames(rows) {
     if (!n || !player) return;
 
     if (!map.has(n)) {
+      const dateRaw = pick(r, ['date','дата','iso','date_text','дата игры']);
+      const timeRaw = pick(r, ['time','время','начало']);
+      
+      let extractedTime = timeRaw;
+      if (!extractedTime && dateRaw) {
+        const timeMatch = String(dateRaw).match(/(\d{1,2})[:.](\d{2})/);
+        if (timeMatch) {
+          extractedTime = `${timeMatch[1]}:${timeMatch[2]}`;
+        }
+      }
+
       map.set(n, {
         n,
-        dateRaw: pick(r, ['date','дата','iso','date_text','дата игры']),
-        time:    pick(r, ['time','время','начало']),
+        dateRaw: dateRaw,
+        time: extractedTime,
         statusRaw: pick(r, ['status','статус','состояние']),
         players: []
       });
@@ -576,7 +644,7 @@ function renderCountdown() {
   if (!next) {
     host.innerHTML = `<div class="countdown finished"><div class="cd-info">
       <div class="cd-label">Сезон 2</div>
-      <div class="cd-title">🏁 Все игры сезона проведены</div>
+      <div class="cd-title"> Все игры сезона проведены</div>
       <div class="cd-sub">Итоги — во вкладке «Общий рейтинг», результаты игр — в «Прошедших играх»</div>
     </div></div>`;
     return null;
@@ -624,7 +692,7 @@ function cardHTML(g, isNext, archived) {
       <div class="game-number">Игра ${g.n} / ${GAMES.length}</div>
       <div class="game-date">${esc(g.date)}</div>
       <div class="game-time">🕧 ${esc(g.time || GAME_TIME)} МСК</div>
-      ${archived && winner ? `<div class="winner-line">🏆 Победитель: ${esc(winner.name)}</div>` : ''}
+      ${archived && winner ? `<div class="winner-line"> Победитель: ${esc(winner.name)}</div>` : ''}
       <span class="status ${st.cls}">${st.label}</span>
     </div>
     <div class="players-list">
@@ -652,7 +720,7 @@ function renderGames(nextN) {
 
   document.getElementById('gamesGrid').innerHTML =
     upcoming.map(g => cardHTML(g, g.n === nextN, false)).join('') ||
-    `<div class="empty-state">Впереди игр нет — сезон полностью сыгран 🏁</div>`;
+    `<div class="empty-state">Впереди игр нет — сезон полностью сыгран </div>`;
 
   document.getElementById('archiveGrid').innerHTML =
     past.map(g => cardHTML(g, false, true)).join('') ||
@@ -660,8 +728,6 @@ function renderGames(nextN) {
 
   document.getElementById('cntUpcoming').textContent = upcoming.length;
   document.getElementById('cntArchive').textContent  = past.length;
-  
-  // УДАЛЕНО: renderArchiveSummary(past); - эта функция больше не нужна
 }
 
 /* ================== ПУТЬ СЕЗОНА ================== */
@@ -687,7 +753,7 @@ function getStageInfo(gamesPlayed) {
 
 function renderSeasonPath(past) {
   const host = document.getElementById('seasonPath');
-  if (!host) return; // Защита от ошибки, если элемента нет
+  if (!host) return;
   
   const totalGames = STAGES.reduce((s, st) => s + st.games, 0);
   const played = past.length;
@@ -723,7 +789,7 @@ function renderSeasonPath(past) {
       <div class="sp-markers">${markersHTML}</div>
     </div>
     <div class="sp-stage-info">
-      <div class="sp-stage-label">${info.finished ? '🏁 Итог' : '📍 Сейчас'}</div>
+      <div class="sp-stage-label">${info.finished ? '🏁 Итог' : ' Сейчас'}</div>
       <div class="sp-stage-name">${stageText}</div>
       ${!info.finished && remaining > 0 ? `<div class="sp-stage-sub">До конца этапа: ${info.stageTotal - info.stageProgress} ${plural(info.stageTotal - info.stageProgress, ['игра', 'игры', 'игр'])}</div>` : ''}
     </div>
@@ -754,7 +820,7 @@ function renderRating() {
   const list = buildRating();
   body.innerHTML = '';
   if (!list.length) {
-    body.innerHTML = `<tr><td colspan="5"><div class="empty-state">Данных пока нет 📊</div></td></tr>`;
+    body.innerHTML = `<tr><td colspan="4"><div class="empty-state">Данных пока нет 📊</div></td></tr>`;
     return;
   }
   list.forEach((p, i) => {
@@ -765,7 +831,8 @@ function renderRating() {
     if (i === 0 && p.points > 0) tr.classList.add('rank-1');
     const isCutoff = i === PLAYOFF_SIZE - 1 && list.length > PLAYOFF_SIZE && p.points > 0;
     if (isCutoff) tr.classList.add('cutoff');
-        tr.innerHTML = `
+    
+    tr.innerHTML = `
       <td class="rank-cell"><span class="rank-badge">${i + 1}</span></td>
       <td><span class="fio">${esc(p.name)}</span><br>
           <span class="games-played">${p.games} ${plural(p.games,['игра','игры','игр'])}</span></td>
@@ -774,6 +841,9 @@ function renderRating() {
         <span class="points-total">${fmt(p.points)}</span>
         ${p.bonus ? `<span class="points-bonus">вкл. бонус +${fmt(p.bonus)}</span>` : ''}
       </td>`;
+      
+    body.appendChild(tr);
+  });
 }
 
 /* ================== ПОДСКАЗКИ ПОВЕРХ ================== */
@@ -870,13 +940,12 @@ function render() {
   renderGames(nextN);
   renderRating();
   const past = GAMES.filter(g => g.status === 'done');
-  renderSeasonPath(past); // Теперь это работает корректно!
+  renderSeasonPath(past);
   runGames(); runArchive(); filterRating();
 }
 
-// Запуск при загрузке
 loadAll();
-setInterval(loadAll, 5 * 60 * 1000); // автообновление каждые 5 минут
+setInterval(loadAll, 5 * 60 * 1000);
 </script>
 </body>
 </html>
