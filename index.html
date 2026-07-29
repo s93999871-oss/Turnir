@@ -34,7 +34,6 @@ body {
   color: var(--text); min-height:100vh;
 }
 
-/* ШАПКА */
 header { position:relative; overflow:hidden; text-align:center; color:var(--white);
   background:linear-gradient(135deg,#7A0E14 0%,var(--eos-dark-red) 35%,var(--eos-red) 75%,#FF3B2F 110%);
   padding:64px 24px 88px; }
@@ -68,7 +67,6 @@ header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 8
 
 .container { max-width:1240px; margin:0 auto; padding:0 24px 80px; }
 
-/* ВКЛАДКИ */
 .tabs-wrap { position:relative; display:flex; gap:4px; width:fit-content; margin:-34px auto 40px; padding:6px;
   background:rgba(255,255,255,.85); backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,.9);
   border-radius:100px; box-shadow:var(--shadow-md); z-index:5; }
@@ -86,7 +84,6 @@ header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 8
 .tab-panel.active { display:block; }
 @keyframes panelIn { from{opacity:0;transform:translateY(16px);} to{opacity:1;transform:translateY(0);} }
 
-/* СТАТУС ЗАГРУЗКИ */
 .load-bar { display:flex; align-items:center; justify-content:center; gap:10px; padding:10px 20px;
   margin:40px auto 0; border-radius:100px; background:linear-gradient(120deg,rgba(30,158,90,.08),rgba(30,158,90,.03));
   border:1px solid rgba(30,158,90,.15); box-shadow:var(--shadow-sm); font-size:.82rem; font-weight:600; 
@@ -99,7 +96,6 @@ header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 8
   display:inline-flex; align-items:center; justify-content:center; transition:transform .3s var(--ease); }
 .reload-btn:hover { background:var(--eos-dark-red); transform:rotate(180deg); }
 
-/* СЧЁТЧИК */
 .countdown { position:relative; overflow:hidden; display:flex; flex-wrap:wrap; align-items:center;
   justify-content:space-between; gap:22px; padding:26px 30px; margin-bottom:34px; border-radius:var(--radius);
   background:linear-gradient(120deg,#8E1017 0%,var(--eos-dark-red) 45%,var(--eos-red) 100%);
@@ -118,7 +114,6 @@ header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 8
 .cd-cap { font-size:.66rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; opacity:.78; margin-top:6px; }
 .countdown.finished { justify-content:center; text-align:center; }
 
-/* ПОИСК */
 .search-box { position:relative; max-width:460px; margin:0 auto 40px; }
 .search-box .icon { position:absolute; left:20px; top:50%; transform:translateY(-50%); font-size:1.05rem; opacity:.45; pointer-events:none; }
 .search-box input { width:100%; font-family:inherit; font-size:1rem; font-weight:500; color:var(--text);
@@ -133,7 +128,6 @@ header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 8
 .search-hint { text-align:center; font-size:.86rem; color:#8A97A3; margin:-26px 0 32px; min-height:1.2em; }
 .search-hint .found { color:var(--eos-red); font-weight:700; }
 
-/* ПЛАШКА ТОП-12 */
 .playoff-banner { position:relative; overflow:hidden; display:flex; align-items:center; gap:20px;
   padding:22px 28px; margin-bottom:26px; border-radius:var(--radius);
   background:linear-gradient(120deg,#FFF7E0 0%,var(--gold-bg) 55%,#FFF1CC 100%);
@@ -148,7 +142,6 @@ header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 8
 .pb-title { font-family:var(--font-head); font-weight:800; font-size:1.06rem; color:#7A5B1E; letter-spacing:-.01em; }
 .pb-sub { font-size:.88rem; font-weight:600; color:#A08A52; margin-top:5px; line-height:1.5; }
 
-/* ПУТЬ СЕЗОНА */
 .season-path { padding:30px; margin-bottom:30px; border-radius:var(--radius); background:var(--white);
   border:1px solid rgba(44,62,80,.07); box-shadow:var(--shadow-sm); animation:cardIn .6s var(--ease) both; }
 .sp-top { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:18px; }
@@ -156,16 +149,7 @@ header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 8
 .sp-progress-text { font-family:var(--font-head); font-weight:800; color:var(--eos-red); font-size:1.1rem; font-variant-numeric:tabular-nums; }
 .sp-bar-wrap { position:relative; height:12px; border-radius:12px; background:rgba(44,62,80,.08); overflow:visible; margin:30px 0 14px; }
 .sp-bar { height:100%; border-radius:12px; background:linear-gradient(90deg,var(--eos-dark-red),var(--eos-red)); transition:width 1.2s var(--ease); }
-.sp-markers { 
-  position:absolute; 
-  top:50%; 
-  left:0; 
-  right:0; 
-  transform:translateY(-50%); 
-  display:flex; 
-  justify-content:space-between; 
-  pointer-events:none;
-}
+.sp-markers { position:absolute; top:50%; left:0; right:0; transform:translateY(-50%); display:flex; justify-content:space-between; pointer-events:none; }
 .sp-marker { position:relative; width:100px; height:28px; display:flex; align-items:center; justify-content:center; }
 .sp-marker::before { content:''; position:absolute; width:14px; height:14px; border-radius:50%; background:var(--white);
   border:3px solid rgba(44,62,80,.15); transition:all .4s var(--ease); z-index:2; }
@@ -173,34 +157,10 @@ header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 8
 .sp-marker.current::before { background:var(--white); border-color:var(--eos-red); border-width:3px;
   box-shadow:0 0 0 4px rgba(227,6,19,.25); animation:pulseMarker 2s var(--ease) infinite; }
 @keyframes pulseMarker { 0%,100%{box-shadow:0 0 0 4px rgba(227,6,19,.25);} 50%{box-shadow:0 0 0 8px rgba(227,6,19,0);} }
-.sp-marker-label { 
-  position:absolute; 
-  top:22px; 
-  left:50%; 
-  transform:translateX(-50%); 
-  white-space:nowrap;
-  font-family:var(--font-head); 
-  font-size:.68rem; 
-  font-weight:600; 
-  color:#7C8894; 
-  text-align:center; 
-  width:120%; 
-}
-
-/* Первый маркер - текст сдвигаем вправо, чтобы не вылезал за левый край */
-.sp-marker:first-child .sp-marker-label {
-  left:0;
-  transform:translateX(0);
-  text-align:left;
-}
-
-/* Последний маркер - текст сдвигаем влево, чтобы не вылезал за правый край */
-.sp-marker:last-child .sp-marker-label {
-  left:auto;
-  right:0;
-  transform:translateX(0);
-  text-align:right;
-}
+.sp-marker-label { position:absolute; top:22px; left:50%; transform:translateX(-50%); white-space:nowrap;
+  font-family:var(--font-head); font-size:.68rem; font-weight:600; color:#7C8894; text-align:center; width:120%; }
+.sp-marker:first-child .sp-marker-label { left:0; transform:translateX(0); text-align:left; }
+.sp-marker:last-child .sp-marker-label { left:auto; right:0; transform:translateX(0); text-align:right; }
 .sp-marker.current .sp-marker-label { color:var(--eos-red); font-weight:700; }
 .sp-marker.done .sp-marker-label { color:var(--green); }
 .sp-stage-info { text-align:center; padding:14px 20px; margin-top:22px; border-radius:14px;
@@ -218,7 +178,6 @@ header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 8
   border-color:rgba(30,158,90,.2); }
 .sp-finished .sp-stage-label { color:var(--green); }
 
-/* КАРТОЧКИ ИГР */
 .games-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:26px; }
 .game-card { background:rgba(255,255,255,.92); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,.95);
   border-radius:var(--radius); box-shadow:var(--shadow-sm); overflow:hidden; display:flex; flex-direction:column;
@@ -271,7 +230,6 @@ header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 8
 .award { font-size:1rem; line-height:1; cursor:help; transition:transform .25s var(--ease); }
 .award:hover { transform:scale(1.28) rotate(-6deg); }
 
-/* ПЛАВАЮЩАЯ ПОДСКАЗКА */
 .float-tip { position:fixed; z-index:9999; top:0; left:0; max-width:260px; font-family:var(--font-head);
   font-size:.74rem; font-weight:600; line-height:1.35; color:var(--white); background:var(--text);
   padding:8px 13px; border-radius:9px; box-shadow:0 12px 30px rgba(44,62,80,.28); opacity:0;
@@ -285,7 +243,6 @@ header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 8
 .no-results.visible { display:block; }
 .empty-state { text-align:center; padding:50px 20px; color:#8A97A3; font-size:1rem; font-weight:600; grid-column:1/-1; }
 
-/* РЕЙТИНГ */
 .rating-wrap { background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow-md);
   overflow:hidden; border:1px solid rgba(44,62,80,.06); }
 table { width:100%; border-collapse:collapse; }
@@ -392,7 +349,7 @@ footer .dot { color:var(--eos-red); }
     </div>
     <div class="search-box">
       <input type="text" id="searchRating" placeholder="Поиск игрока по ФИО…" autocomplete="off">
-      <span class="icon">🔍</span>
+      <span class="icon"></span>
       <button class="search-clear" id="clearRating" title="Очистить">✕</button>
     </div>
     <p class="search-hint" id="hintRating"></p>
@@ -402,8 +359,8 @@ footer .dot { color:var(--eos-red); }
         <tbody id="ratingBody"></tbody>
       </table>
     </div>
-    <div class="no-results" id="noRating">Игрок не найден </div>
-    <p class="bonus-note">Баллы = сумма набранного в играх + автоматические бонусы:  победа +1000, ⭐ яркий игрок +500</p>
+    <div class="no-results" id="noRating">Игрок не найден 🤷</div>
+    <p class="bonus-note">Баллы = сумма набранного в играх + автоматические бонусы: 🏆 победа +1000, ⭐ яркий игрок +500</p>
   </section>
 
 </div>
@@ -455,19 +412,62 @@ function pick(row, names) {
   return '';
 }
 
+/* ===== НОВАЯ ФУНКЦИЯ: извлечение времени из любой строки ===== */
+/* Работает с форматами:
+   - "25.10.2024 10:00"
+   - "2024-10-25 10:00"
+   - "2024-10-25T10:00:00.000Z"
+   - "10:00" (только время)
+   - "10.00" (через точку)
+   - "25.10.2024, 10:00"
+*/
+function extractTime(str) {
+  if (!str) return null;
+  const s = String(str);
+  
+  // 1. Ищем время ПОСЛЕ разделителя (пробел, T, запятая) — это самый надёжный способ
+  //    Отделяем время от даты вида "25.10.2024"
+  let m = s.match(/[\s,T](\d{1,2})[:.](\d{2})(?:[:.]\d{2})?/);
+  if (m) {
+    const h = parseInt(m[1], 10);
+    const min = parseInt(m[2], 10);
+    if (h >= 0 && h <= 23 && min >= 0 && min <= 59) {
+      return { hours: h, minutes: min };
+    }
+  }
+  
+  // 2. Если не нашли — ищем просто время в формате ЧЧ:ММ (двоеточие — явный признак времени)
+  m = s.match(/(\d{1,2}):(\d{2})(?:[:.]\d{2})?/);
+  if (m) {
+    const h = parseInt(m[1], 10);
+    const min = parseInt(m[2], 10);
+    if (h >= 0 && h <= 23 && min >= 0 && min <= 59) {
+      return { hours: h, minutes: min };
+    }
+  }
+  
+  return null;
+}
+
+/* ===== НОВАЯ ФУНКЦИЯ: извлечение даты из строки (игнорируя время) ===== */
 function parseDate(raw) {
   const s = String(raw ?? '').trim();
   if (!s) return null;
-  let m = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  
+  // Убираем время из строки, чтобы не мешало парсингу даты
+  const dateOnly = s.replace(/[\s,T]\d{1,2}[:.]\d{2}(?:[:.]\d{2})?/, '').trim();
+  if (!dateOnly) return null;
+  
+  let m = dateOnly.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
-  m = s.match(/^(\d{1,2})[.\/](\d{1,2})[.\/](\d{4})/);
+  m = dateOnly.match(/^(\d{1,2})[.\/](\d{1,2})[.\/](\d{4})/);
   if (m) return new Date(+m[3], +m[2] - 1, +m[1]);
-  m = s.toLowerCase().match(/^(\d{1,2})\s+([а-яё]+)\s+(\d{4})/);
+  m = dateOnly.toLowerCase().match(/^(\d{1,2})\s+([а-яё]+)\s+(\d{4})/);
   if (m) {
     const idx = MONTHS.findIndex(mo => mo.startsWith(m[2].slice(0, 4)));
     if (idx >= 0) return new Date(+m[3], idx, +m[1]);
   }
-  const d = new Date(s);
+  const d = new Date(dateOnly);
   return isNaN(d) ? null : d;
 }
 
@@ -477,38 +477,35 @@ function dateText(raw) {
   return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
 }
 
+/* ===== ПЕРЕПИСАННАЯ ФУНКЦИЯ: установка времени начала игры ===== */
 function gameStart(g) {
-  const d = parseDate(g.dateRaw);
-  if (!d) return null;
+  // 1. Пытаемся получить дату
+  let d = parseDate(g.dateRaw);
   
-  let timeStr = '';
+  // 2. Если даты нет — используем сегодняшнюю (на случай, когда в iso только время)
+  if (!d) {
+    d = new Date();
+    d.setHours(0, 0, 0, 0);
+  }
+  
+  // 3. Ищем время: сначала в отдельном поле time, потом в dateRaw (iso)
+  let timeInfo = null;
   
   if (g.time) {
-    timeStr = String(g.time).trim();
+    timeInfo = extractTime(g.time);
   }
   
-  if (!timeStr && g.dateRaw) {
-    const dateStr = String(g.dateRaw);
-    const timeMatch = dateStr.match(/(\d{1,2})[:.](\d{2})(?::\d{2})?/);
-    if (timeMatch) {
-      timeStr = `${timeMatch[1]}:${timeMatch[2]}`;
-    }
+  if (!timeInfo && g.dateRaw) {
+    timeInfo = extractTime(g.dateRaw);
   }
   
-  if (timeStr) {
-    const t = timeStr.match(/(\d{1,2})[:.](\d{2})/);
-    if (t) {
-      const hours = parseInt(t[1], 10);
-      const minutes = parseInt(t[2], 10);
-      
-      if (hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59) {
-        d.setHours(hours, minutes, 0, 0);
-        return d;
-      }
-    }
+  // 4. Устанавливаем время
+  if (timeInfo) {
+    d.setHours(timeInfo.hours, timeInfo.minutes, 0, 0);
+  } else {
+    d.setHours(12, 30, 0, 0); // дефолт
   }
   
-  d.setHours(12, 30, 0, 0);
   return d;
 }
 
@@ -523,6 +520,14 @@ function normStatus(raw, start) {
 /* ================== ЗАГРУЗКА ИЗ GOOGLE APPS SCRIPT ================== */
 function parseGames(rows) {
   const map = new Map();
+  
+  // ОТЛАДКА: выводим первые 3 строки сырых данных
+  console.log('=== СЫРЫЕ ДАННЫЕ ИЗ ТАБЛИЦЫ ===');
+  rows.slice(0, 3).forEach((r, idx) => {
+    console.log(`Строка ${idx}:`, JSON.stringify(r, null, 2));
+  });
+  console.log('================================');
+  
   rows.forEach(r => {
     const player = String(pick(r, ['player','игрок','фио','участник','name','имя'])).trim();
     const nRaw   = pick(r, ['game','игра','№','номер','номер игры','game_number','n']);
@@ -533,11 +538,15 @@ function parseGames(rows) {
       const dateRaw = pick(r, ['date','дата','iso','date_text','дата игры']);
       const timeRaw = pick(r, ['time','время','начало']);
       
+      console.log(`Игра ${n}: dateRaw="${dateRaw}" (type: ${typeof dateRaw}), timeRaw="${timeRaw}" (type: ${typeof timeRaw})`);
+      
+      // Пытаемся извлечь время из dateRaw (iso), если нет отдельного поля time
       let extractedTime = timeRaw;
       if (!extractedTime && dateRaw) {
-        const timeMatch = String(dateRaw).match(/(\d{1,2})[:.](\d{2})/);
-        if (timeMatch) {
-          extractedTime = `${timeMatch[1]}:${timeMatch[2]}`;
+        const timeInfo = extractTime(dateRaw);
+        if (timeInfo) {
+          extractedTime = `${String(timeInfo.hours).padStart(2,'0')}:${String(timeInfo.minutes).padStart(2,'0')}`;
+          console.log(`  → Извлечено время из dateRaw: ${extractedTime}`);
         }
       }
 
@@ -566,6 +575,38 @@ function parseGames(rows) {
 
   return [...map.values()].map(g => {
     const start = gameStart(g);
+    console.log(`Игра ${g.n}: dateRaw="${g.dateRaw}", time="${g.time}", start=${start.toLocaleString('ru-RU')}`);
+    return { ...g, date: dateText(g.dateRaw), start, status: normStatus(g.statusRaw, start) };
+  }).sort((a,b) => a.n - b.n);
+}
+
+      map.set(n, {
+        n,
+        dateRaw: dateRaw,
+        time: extractedTime,
+        statusRaw: pick(r, ['status','статус','состояние']),
+        players: []
+      });
+    }
+    const g = map.get(n);
+    if (!g.dateRaw) g.dateRaw = pick(r, ['date','дата','iso','date_text','дата игры']);
+    if (!g.statusRaw) g.statusRaw = pick(r, ['status','статус','состояние']);
+
+    const scoreRaw = String(pick(r, ['score','баллы','очки','результат','points'])).replace(/[\s\u00A0]/g,'').replace(',', '.');
+    const score = scoreRaw === '' || isNaN(Number(scoreRaw)) ? null : Number(scoreRaw);
+
+    g.players.push({
+      name: player,
+      score,
+      win:    yes(pick(r, ['win','победа','winner','победитель'])),
+      bright: yes(pick(r, ['bright','яркий','яркий игрок','star','звезда']))
+    });
+  });
+
+  return [...map.values()].map(g => {
+    const start = gameStart(g);
+    // Отладка в консоль — можно убрать потом
+    console.log(`Игра ${g.n}: dateRaw="${g.dateRaw}", time="${g.time}", start=${start.toLocaleString('ru-RU')}`);
     return { ...g, date: dateText(g.dateRaw), start, status: normStatus(g.statusRaw, start) };
   }).sort((a,b) => a.n - b.n);
 }
@@ -644,7 +685,7 @@ function renderCountdown() {
   if (!next) {
     host.innerHTML = `<div class="countdown finished"><div class="cd-info">
       <div class="cd-label">Сезон 2</div>
-      <div class="cd-title"> Все игры сезона проведены</div>
+      <div class="cd-title">🏁 Все игры сезона проведены</div>
       <div class="cd-sub">Итоги — во вкладке «Общий рейтинг», результаты игр — в «Прошедших играх»</div>
     </div></div>`;
     return null;
@@ -692,7 +733,7 @@ function cardHTML(g, isNext, archived) {
       <div class="game-number">Игра ${g.n} / ${GAMES.length}</div>
       <div class="game-date">${esc(g.date)}</div>
       <div class="game-time">🕧 ${esc(g.time || GAME_TIME)} МСК</div>
-      ${archived && winner ? `<div class="winner-line"> Победитель: ${esc(winner.name)}</div>` : ''}
+      ${archived && winner ? `<div class="winner-line">🏆 Победитель: ${esc(winner.name)}</div>` : ''}
       <span class="status ${st.cls}">${st.label}</span>
     </div>
     <div class="players-list">
@@ -701,7 +742,7 @@ function cardHTML(g, isNext, archived) {
         const total = p.score === null ? null : p.score + b;
         return `<div class="player-row${p.win ? ' winner' : ''}" data-name="${esc(p.name.toLowerCase())}">
           <span class="player-name">${esc(p.name)}</span>
-          ${p.win ? `<span class="award" data-tip="Победа в игре · +${fmt(BONUS.win)} баллов (уже в сумме)">🏆</span>` : ''}
+          ${p.win ? `<span class="award" data-tip="Победа в игре · +${fmt(BONUS.win)} баллов (уже в сумме)"></span>` : ''}
           ${p.bright ? `<span class="award" data-tip="Яркий игрок · +${fmt(BONUS.bright)} баллов (уже в сумме)">⭐</span>` : ''}
           <span class="score-wrap">
             <span class="player-score ${total === null ? 'empty' : ''}">${total === null ? '—' : fmt(total)}</span>
@@ -720,7 +761,7 @@ function renderGames(nextN) {
 
   document.getElementById('gamesGrid').innerHTML =
     upcoming.map(g => cardHTML(g, g.n === nextN, false)).join('') ||
-    `<div class="empty-state">Впереди игр нет — сезон полностью сыгран </div>`;
+    `<div class="empty-state">Впереди игр нет — сезон полностью сыгран 🏁</div>`;
 
   document.getElementById('archiveGrid').innerHTML =
     past.map(g => cardHTML(g, false, true)).join('') ||
@@ -789,7 +830,7 @@ function renderSeasonPath(past) {
       <div class="sp-markers">${markersHTML}</div>
     </div>
     <div class="sp-stage-info">
-      <div class="sp-stage-label">${info.finished ? '🏁 Итог' : ' Сейчас'}</div>
+      <div class="sp-stage-label">${info.finished ? '🏁 Итог' : '📍 Сейчас'}</div>
       <div class="sp-stage-name">${stageText}</div>
       ${!info.finished && remaining > 0 ? `<div class="sp-stage-sub">До конца этапа: ${info.stageTotal - info.stageProgress} ${plural(info.stageTotal - info.stageProgress, ['игра', 'игры', 'игр'])}</div>` : ''}
     </div>
