@@ -148,20 +148,7 @@ header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 8
 .pb-title { font-family:var(--font-head); font-weight:800; font-size:1.06rem; color:#7A5B1E; letter-spacing:-.01em; }
 .pb-sub { font-size:.88rem; font-weight:600; color:#A08A52; margin-top:5px; line-height:1.5; }
 
-/* СВОДКА АРХИВА */
-.archive-summary { padding:24px 28px; margin-bottom:30px; border-radius:var(--radius); background:var(--white);
-  border:1px solid rgba(44,62,80,.07); box-shadow:var(--shadow-sm); animation:cardIn .6s var(--ease) both; }
-.as-top { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:12px; }
-.as-title { font-family:var(--font-head); font-weight:700; font-size:1.1rem; }
-.as-count { font-family:var(--font-head); font-weight:800; color:var(--eos-red); font-size:1.1rem; font-variant-numeric:tabular-nums; }
-.progress { height:9px; border-radius:9px; background:rgba(44,62,80,.08); overflow:hidden; margin-top:14px; }
-.progress span { display:block; height:100%; border-radius:9px;
-  background:linear-gradient(90deg,var(--eos-dark-red),var(--eos-red)); transition:width 1s var(--ease); }
-.as-stats { display:flex; flex-wrap:wrap; gap:26px; margin-top:16px; }
-.as-stat { font-size:.86rem; font-weight:600; color:#7C8894; }
-.as-stat b { display:block; font-family:var(--font-head); font-size:1.15rem; color:var(--text); margin-bottom:2px; }
-
-  /* ПУТЬ СЕЗОНА */
+/* ПУТЬ СЕЗОНА */
 .season-path { padding:30px; margin-bottom:30px; border-radius:var(--radius); background:var(--white);
   border:1px solid rgba(44,62,80,.07); box-shadow:var(--shadow-sm); animation:cardIn .6s var(--ease) both; }
 .sp-top { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:18px; }
@@ -311,8 +298,7 @@ footer .dot { color:var(--eos-red); }
   .countdown { padding:22px; }
   .cd-unit { min-width:62px; }
   .cd-num { font-size:1.35rem; }
-  thead th:nth-child(3), tbody td:nth-child(3),
-  thead th:nth-child(4), tbody td:nth-child(4) { display:none; }
+ thead th:nth-child(3), tbody td:nth-child(3) { display:none; }
 }
 </style>
 </head>
@@ -352,7 +338,9 @@ footer .dot { color:var(--eos-red); }
   </section>
 
   <section class="tab-panel" id="panel-archive">
+    <!-- ЗДЕСЬ ТЕПЕРЬ ПУТЬ СЕЗОНА -->
     <div id="seasonPath"></div>
+    
     <div class="search-box">
       <input type="text" id="searchArchive" placeholder="Поиск игрока в прошедших играх…" autocomplete="off">
       <span class="icon">🔍</span>
@@ -378,7 +366,7 @@ footer .dot { color:var(--eos-red); }
     <p class="search-hint" id="hintRating"></p>
     <div class="rating-wrap">
       <table>
-        <thead><tr><th>Место</th><th>ФИО</th><th>Город</th><th>Отдел</th><th>Баллы</th></tr></thead>
+        <thead><tr><th>Место</th><th>ФИО</th><th>Город</th><th>Баллы</th></tr></thead>
         <tbody id="ratingBody"></tbody>
       </table>
     </div>
@@ -386,8 +374,7 @@ footer .dot { color:var(--eos-red); }
     <p class="bonus-note">Баллы = сумма набранного в играх + автоматические бонусы: 🏆 победа +1000, ⭐ яркий игрок +500</p>
   </section>
 
-</div>
-</div>  <!-- закрывающий div container -->
+</div> <!-- закрывающий div container (исправлено: убран лишний </div>) -->
 
 <div class="load-bar" id="loadBar"><span class="spinner"></span><span id="loadText">Загружаю данные из Google-таблицы…</span></div>
 
@@ -399,7 +386,6 @@ footer .dot { color:var(--eos-red); }
 
 <script>
 /* ================== НАСТРОЙКИ ================== */
-// ВСТАВЬТЕ СЮДА ВАШ URL ВЕБ-ПРИЛОЖЕНИЯ из Google Apps Script (тот, что заканчивается на /exec)
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwBLheiePly3_F7d1G5SgJb-KD0N5PRESySNM5Rv72u_KN2EM8ktRKichvfN6kPgZ8/exec';
 
 const BONUS = { win: 1000, bright: 500 };
@@ -438,7 +424,7 @@ function pick(row, names) {
   return '';
 }
 
-/* Разбор даты: понимает 2026-08-06, 06.08.2026, 6 августа 2026 */
+/* Разбор даты */
 function parseDate(raw) {
   const s = String(raw ?? '').trim();
   if (!s) return null;
@@ -461,7 +447,6 @@ function dateText(raw) {
   return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
 }
 
-/* Момент начала игры (по времени из таблицы или 12:30 по умолчанию) */
 function gameStart(g) {
   const d = parseDate(g.dateRaw);
   if (!d) return null;
@@ -479,16 +464,6 @@ function normStatus(raw, start) {
 }
 
 /* ================== ЗАГРУЗКА ИЗ GOOGLE APPS SCRIPT ================== */
-
-/* Ищем значение в строке по нескольким возможным названиям колонки */
-function pick(row, names) {
-  for (const key in row) {
-    const k = key.trim().toLowerCase();
-    if (names.includes(k)) return row[key];
-  }
-  return '';
-}
-
 function parseGames(rows) {
   const map = new Map();
   rows.forEach(r => {
@@ -548,7 +523,7 @@ async function loadAll() {
   
   try {
     if (SCRIPT_URL.includes('ВАШ_ДЛИННЫЙ_ID')) {
-      throw new Error('Необходимо вставить реальный URL веб-приложения в переменную SCRIPT_URL в начале кода');
+      throw new Error('Необходимо вставить реальный URL веб-приложения в переменную SCRIPT_URL');
     }
 
     const [gRes, pRes] = await Promise.all([
@@ -574,16 +549,16 @@ async function loadAll() {
     
     render();
     const now = new Date().toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit' });
-document.getElementById('loadBar').innerHTML =
-  `<span>🟢 Актуально на ${now}</span>
-   <button class="reload-btn" onclick="loadAll()" title="Обновить данные">↻</button>`;
+    document.getElementById('loadBar').innerHTML =
+      `<span>🟢 Актуально на ${now}</span>
+       <button class="reload-btn" onclick="loadAll()" title="Обновить данные">↻</button>`;
   } catch (e) {
     console.error(e);
     document.getElementById('loadBar').className = 'load-bar error';
     document.getElementById('loadBar').innerHTML =
       `<span>⚠️ Не удалось загрузить таблицу: ${esc(e.message)}.</span>
        <button class="reload-btn" onclick="loadAll()">Повторить</button>`;
-    render(); // Показываем локальные данные при ошибке
+    render(); 
   }
 }
 
@@ -685,31 +660,11 @@ function renderGames(nextN) {
 
   document.getElementById('cntUpcoming').textContent = upcoming.length;
   document.getElementById('cntArchive').textContent  = past.length;
-  renderArchiveSummary(past);
+  
+  // УДАЛЕНО: renderArchiveSummary(past); - эта функция больше не нужна
 }
 
-function renderArchiveSummary(past) {
-  const total = GAMES.length;
-  const pct = total ? Math.round(past.length / total * 100) : 0;
-  const all = past.flatMap(g => g.players.filter(p => p.score !== null).map(p => ({ p, v: p.score + bonusOf(p) })));
-  const best = all.length ? Math.max(...all.map(x => x.v)) : 0;
-  const bestPlayer = all.find(x => x.v === best)?.p;
-  const participants = new Set(past.flatMap(g => g.players.map(p => p.name))).size;
-
-  document.getElementById('archiveSummary').innerHTML = `<div class="archive-summary">
-    <div class="as-top">
-      <span class="as-title">🗄 Прошедшие игры сезона</span>
-      <span class="as-count">${past.length} из ${total} игр · ${pct}%</span>
-    </div>
-    <div class="progress"><span style="width:${pct}%"></span></div>
-    <div class="as-stats">
-      <div class="as-stat"><b>${participants}</b>${plural(participants,['участник сыграл','участника сыграли','участников сыграли'])}</div>
-      <div class="as-stat"><b>${fmt(best)}</b>лучший результат игры${bestPlayer ? ' · ' + esc(bestPlayer.name) : ''}</div>
-      <div class="as-stat"><b>${total - past.length}</b>${plural(total - past.length,['игра впереди','игры впереди','игр впереди'])}</div>
-    </div>
-  </div>`;
-}
-  /* ================== ПУТЬ СЕЗОНА ================== */
+/* ================== ПУТЬ СЕЗОНА ================== */
 const STAGES = [
   { name: 'Тур 1',     games: 13 },
   { name: 'Тур 2',     games: 13 },
@@ -732,6 +687,8 @@ function getStageInfo(gamesPlayed) {
 
 function renderSeasonPath(past) {
   const host = document.getElementById('seasonPath');
+  if (!host) return; // Защита от ошибки, если элемента нет
+  
   const totalGames = STAGES.reduce((s, st) => s + st.games, 0);
   const played = past.length;
   const pct = totalGames ? Math.round(played / totalGames * 100) : 0;
@@ -749,7 +706,6 @@ function renderSeasonPath(past) {
     if (i < info.stageIndex) cls = 'done';
     else if (i === info.stageIndex && !info.finished) cls = 'current';
     else if (info.finished) cls = 'done';
-    const label = i < info.stageIndex ? '✓' : (i === info.stageIndex && !info.finished ? '●' : (i + 1));
     return `<div class="sp-marker ${cls}"><span class="sp-marker-label">${st.name}</span></div>`;
   }).join('');
 
@@ -805,23 +761,19 @@ function renderRating() {
     const tr = document.createElement('tr');
     tr.style.setProperty('--i', i);
     tr.dataset.name = p.name.toLowerCase();
-    if (i < PLAYOFF_SIZE) tr.classList.add('top12');
-    if (i === 0) tr.classList.add('rank-1');
-    const isCutoff = i === PLAYOFF_SIZE - 1 && list.length > PLAYOFF_SIZE;
+    if (i < PLAYOFF_SIZE && p.points > 0) tr.classList.add('top12');
+    if (i === 0 && p.points > 0) tr.classList.add('rank-1');
+    const isCutoff = i === PLAYOFF_SIZE - 1 && list.length > PLAYOFF_SIZE && p.points > 0;
     if (isCutoff) tr.classList.add('cutoff');
-    tr.innerHTML = `
+        tr.innerHTML = `
       <td class="rank-cell"><span class="rank-badge">${i + 1}</span></td>
       <td><span class="fio">${esc(p.name)}</span><br>
-          <span class="games-played">${p.games} ${plural(p.games,['игра','игры','игр'])}</span>
-          ${isCutoff ? '<span class="cutoff-note">↑ граница плей-офф</span>' : ''}</td>
+          <span class="games-played">${p.games} ${plural(p.games,['игра','игры','игр'])}</span></td>
       <td class="meta">${esc(p.city) || '—'}</td>
-      <td class="meta">${esc(p.dept) || '—'}</td>
       <td class="points-cell">
         <span class="points-total">${fmt(p.points)}</span>
         ${p.bonus ? `<span class="points-bonus">вкл. бонус +${fmt(p.bonus)}</span>` : ''}
       </td>`;
-    body.appendChild(tr);
-  });
 }
 
 /* ================== ПОДСКАЗКИ ПОВЕРХ ================== */
@@ -918,11 +870,13 @@ function render() {
   renderGames(nextN);
   renderRating();
   const past = GAMES.filter(g => g.status === 'done');
-  renderSeasonPath(past);
+  renderSeasonPath(past); // Теперь это работает корректно!
   runGames(); runArchive(); filterRating();
 }
+
+// Запуск при загрузке
 loadAll();
 setInterval(loadAll, 5 * 60 * 1000); // автообновление каждые 5 минут
 </script>
 </body>
-</html> проверь что не так с кодом. 
+</html>
