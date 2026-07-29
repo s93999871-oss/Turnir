@@ -422,11 +422,22 @@ function pick(row, names) {
    - "25.10.2024, 10:00"
 */
 function extractTime(str) {
-  if (!str) return null;
+  if (!str && str !== 0) return null;
+  
+  // 1. Если число (доля дня из Google Sheets)
+  if (typeof str === 'number') {
+    const totalMinutes = Math.round(str * 24 * 60);
+    const hours = Math.floor(totalMinutes / 60) % 24;
+    const minutes = totalMinutes % 60;
+    if (hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59) {
+      return { hours, minutes };
+    }
+    return null;
+  }
+  
   const s = String(str);
   
-  // 1. Ищем время ПОСЛЕ разделителя (пробел, T, запятая) — это самый надёжный способ
-  //    Отделяем время от даты вида "25.10.2024"
+  // 2. Ищем время ПОСЛЕ разделителя (пробел, T, запятая)
   let m = s.match(/[\s,T](\d{1,2})[:.](\d{2})(?:[:.]\d{2})?/);
   if (m) {
     const h = parseInt(m[1], 10);
@@ -436,7 +447,7 @@ function extractTime(str) {
     }
   }
   
-  // 2. Если не нашли — ищем просто время в формате ЧЧ:ММ (двоеточие — явный признак времени)
+  // 3. Ищем просто время с двоеточием
   m = s.match(/(\d{1,2}):(\d{2})(?:[:.]\d{2})?/);
   if (m) {
     const h = parseInt(m[1], 10);
