@@ -422,22 +422,11 @@ function pick(row, names) {
    - "25.10.2024, 10:00"
 */
 function extractTime(str) {
-  if (!str && str !== 0) return null;
-  
-  // 1. Если число (доля дня из Google Sheets)
-  if (typeof str === 'number') {
-    const totalMinutes = Math.round(str * 24 * 60);
-    const hours = Math.floor(totalMinutes / 60) % 24;
-    const minutes = totalMinutes % 60;
-    if (hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59) {
-      return { hours, minutes };
-    }
-    return null;
-  }
-  
+  if (!str) return null;
   const s = String(str);
   
-  // 2. Ищем время ПОСЛЕ разделителя (пробел, T, запятая)
+  // 1. Ищем время ПОСЛЕ разделителя (пробел, T, запятая) — это самый надёжный способ
+  //    Отделяем время от даты вида "25.10.2024"
   let m = s.match(/[\s,T](\d{1,2})[:.](\d{2})(?:[:.]\d{2})?/);
   if (m) {
     const h = parseInt(m[1], 10);
@@ -447,7 +436,7 @@ function extractTime(str) {
     }
   }
   
-  // 3. Ищем просто время с двоеточием
+  // 2. Если не нашли — ищем просто время в формате ЧЧ:ММ (двоеточие — явный признак времени)
   m = s.match(/(\d{1,2}):(\d{2})(?:[:.]\d{2})?/);
   if (m) {
     const h = parseInt(m[1], 10);
@@ -531,14 +520,6 @@ function normStatus(raw, start) {
 /* ================== ЗАГРУЗКА ИЗ GOOGLE APPS SCRIPT ================== */
 function parseGames(rows) {
   const map = new Map();
-  
-  // ОТЛАДКА: выводим первые 3 строки сырых данных
-  console.log('=== СЫРЫЕ ДАННЫЕ ИЗ ТАБЛИЦЫ ===');
-  rows.slice(0, 3).forEach((r, idx) => {
-    console.log(`Строка ${idx}:`, JSON.stringify(r, null, 2));
-  });
-  console.log('================================');
-  
   rows.forEach(r => {
     const player = String(pick(r, ['player','игрок','фио','участник','name','имя'])).trim();
     const nRaw   = pick(r, ['game','игра','№','номер','номер игры','game_number','n']);
@@ -546,62 +527,31 @@ function parseGames(rows) {
     if (!n || !player) return;
 
     if (!map.has(n)) {
-      const dateRaw = pick(r, ['date','дата','iso','date_text','дата игры']);
-      const timeRaw = pick(r, ['time','время','начало']);
-      
-      console.log(`Игра ${n}: dateRaw="${dateRaw}" (type: ${typeof dateRaw}), timeRaw="${timeRaw}" (type: ${typeof timeRaw})`);
-      
-      // Пытаемся извлечь время из dateRaw (iso), если нет отдельного поля time
-      let extractedTime = timeRaw;
-      if (!extractedTime && dateRaw) {
-        const timeInfo = extractTime(dateRaw);
-        if (timeInfo) {
-          extractedTime = `${String(timeInfo.hours).padStart(2,'0')}:${String(timeInfo.minutes).padStart(2,'0')}`;
-          console.log(`  → Извлечено время из dateRaw: ${extractedTime}`);
-        }
-      }
-
-      map.set(n, {
-        n,
-        dateRaw: dateRaw,
-        time: extractedTime,
-        statusRaw: pick(r, ['status','статус','состояние']),
-        players: []
-      });
+  // Дата из колонки B (date_text)
+  const dateRaw = pick(r, ['date_text', 'date', 'дата', 'дата игры']);
+  
+  // Время из колонки C (iso)
+  const timeRaw = pick(r, ['iso', 'time', 'время', 'начало']);
+  
+  let extractedTime = timeRaw;
+  if (!extractedTime && dateRaw) {
+    const timeInfo = extractTime(dateRaw);
+    if (timeInfo) {
+      extractedTime = `${String(timeInfo.hours).padStart(2,'0')}:${String(timeInfo.minutes).padStart(2,'0')}`;
     }
-    const g = map.get(n);
-    if (!g.dateRaw) g.dateRaw = pick(r, ['date','дата','iso','date_text','дата игры']);
-    if (!g.statusRaw) g.statusRaw = pick(r, ['status','статус','состояние']);
+  }
 
-    const scoreRaw = String(pick(r, ['score','баллы','очки','результат','points'])).replace(/[\s\u00A0]/g,'').replace(',', '.');
-    const score = scoreRaw === '' || isNaN(Number(scoreRaw)) ? null : Number(scoreRaw);
-
-    g.players.push({
-      name: player,
-      score,
-      win:    yes(pick(r, ['win','победа','winner','победитель'])),
-      bright: yes(pick(r, ['bright','яркий','яркий игрок','star','звезда']))
-    });
+  map.set(n, {
+    n,
+    dateRaw: dateRaw,
+    time: extractedTime,
+    statusRaw: pick(r, ['status','статус','состояние']),
+    players: []
   });
-
-  return [...map.values()].map(g => {
-    const start = gameStart(g);
-    console.log(`Игра ${g.n}: dateRaw="${g.dateRaw}", time="${g.time}", start=${start.toLocaleString('ru-RU')}`);
-    return { ...g, date: dateText(g.dateRaw), start, status: normStatus(g.statusRaw, start) };
-  }).sort((a,b) => a.n - b.n);
 }
-
-      map.set(n, {
-        n,
-        dateRaw: dateRaw,
-        time: extractedTime,
-        statusRaw: pick(r, ['status','статус','состояние']),
-        players: []
-      });
-    }
     const g = map.get(n);
-    if (!g.dateRaw) g.dateRaw = pick(r, ['date','дата','iso','date_text','дата игры']);
-    if (!g.statusRaw) g.statusRaw = pick(r, ['status','статус','состояние']);
+if (!g.dateRaw) g.dateRaw = pick(r, ['date_text', 'date', 'дата', 'дата игры']);
+if (!g.statusRaw) g.statusRaw = pick(r, ['status','статус','состояние']);
 
     const scoreRaw = String(pick(r, ['score','баллы','очки','результат','points'])).replace(/[\s\u00A0]/g,'').replace(',', '.');
     const score = scoreRaw === '' || isNaN(Number(scoreRaw)) ? null : Number(scoreRaw);
