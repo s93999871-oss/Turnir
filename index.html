@@ -87,17 +87,17 @@ header h1 .accent { background:linear-gradient(90deg,#FFF 20%,#FFE3B0 50%,#FFF 8
 @keyframes panelIn { from{opacity:0;transform:translateY(16px);} to{opacity:1;transform:translateY(0);} }
 
 /* СТАТУС ЗАГРУЗКИ */
-.load-bar { display:flex; align-items:center; justify-content:center; gap:12px; padding:16px 22px;
-  margin-bottom:26px; border-radius:var(--radius); background:var(--white); border:1px solid rgba(44,62,80,.07);
-  box-shadow:var(--shadow-sm); font-size:.88rem; font-weight:600; color:#7C8894; }
+.load-bar { display:flex; align-items:center; justify-content:center; gap:10px; padding:10px 20px;
+  margin:40px auto 0; border-radius:100px; background:linear-gradient(120deg,rgba(30,158,90,.08),rgba(30,158,90,.03));
+  border:1px solid rgba(30,158,90,.15); box-shadow:var(--shadow-sm); font-size:.82rem; font-weight:600; 
+  color:#5C6B7A; width:fit-content; }
 .load-bar.hidden { display:none; }
-.load-bar.error { color:var(--eos-dark-red); background:#FFF5; border-color:rgba(227,6,19,.2); }
-.spinner { width:18px; height:18px; border:2.5px solid rgba(227,6,19,.2); border-top-color:var(--eos-red);
-  border-radius:50%; animation:spin .8s linear infinite; }
-@keyframes spin { to { transform:rotate(360deg); } }
+.load-bar.error { color:var(--eos-dark-red); background:linear-gradient(120deg,rgba(227,6,19,.08),rgba(227,6,19,.03)); 
+  border-color:rgba(227,6,19,.2); }
 .reload-btn { font-family:var(--font-head); font-size:.78rem; font-weight:700; border:none; cursor:pointer;
-  padding:7px 15px; border-radius:100px; background:var(--eos-red); color:var(--white); }
-.reload-btn:hover { background:var(--eos-dark-red); }
+  width:32px; height:32px; border-radius:50%; background:var(--eos-red); color:var(--white); 
+  display:inline-flex; align-items:center; justify-content:center; transition:transform .3s var(--ease); }
+.reload-btn:hover { background:var(--eos-dark-red); transform:rotate(180deg); }
 
 /* СЧЁТЧИК */
 .countdown { position:relative; overflow:hidden; display:flex; flex-wrap:wrap; align-items:center;
@@ -304,8 +304,6 @@ footer .dot { color:var(--eos-red); }
     <button class="tab-btn" data-tab="rating">📊 Общий рейтинг</button>
   </nav>
 
-  <div class="load-bar" id="loadBar"><span class="spinner"></span><span id="loadText">Загружаю данные из Google-таблицы…</span></div>
-
   <section class="tab-panel active" id="panel-schedule">
     <div id="countdownHost"></div>
     <div class="search-box">
@@ -355,7 +353,13 @@ footer .dot { color:var(--eos-red); }
   </section>
 
 </div>
+</div>  <!-- закрывающий div container -->
 
+<div class="load-bar" id="loadBar"><span class="spinner"></span><span id="loadText">Загружаю данные из Google-таблицы…</span></div>
+
+<footer>
+  Своя Игра EOS <span class="dot">•</span> Сезон 2 <span class="dot">•</span> Все игры начинаются в 12:30 МСК
+</footer>
 <footer>
   Своя Игра EOS <span class="dot">•</span> Сезон 2 <span class="dot">•</span> Все игры начинаются в 12:30 МСК
 </footer>
@@ -539,9 +543,9 @@ async function loadAll() {
     
     render();
     const now = new Date().toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit' });
-    document.getElementById('loadBar').innerHTML =
-      `<span>✅ Данные из таблицы загружены в ${now} · игр: ${GAMES.length} · игроков: ${PLAYERS.length}</span>
-       <button class="reload-btn" onclick="loadAll()">Обновить</button>`;
+document.getElementById('loadBar').innerHTML =
+  `<span>🟢 Актуально на ${now}</span>
+   <button class="reload-btn" onclick="loadAll()" title="Обновить данные">↻</button>`;
   } catch (e) {
     console.error(e);
     document.getElementById('loadBar').className = 'load-bar error';
