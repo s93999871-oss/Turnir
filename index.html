@@ -364,9 +364,9 @@ footer .dot { color:var(--eos-red); }
 
 <script>
 /* ================== НАСТРОЙКИ ================== */
-const SHEET_ID = '1ORzJwl1vDbVNzBS8_AdPcSRw5oovO6KaNcWcarrp0OY';
-const SHEET_GAMES   = 'Games';    // лист с играми
-const SHEET_PLAYERS = 'Players';  // лист с игроками
+// ВСТАВЬТЕ СЮДА ВАШ URL ВЕБ-ПРИЛОЖЕНИЯ из Google Apps Script (тот, что заканчивается на /exec)
+const SCRIPT_URL = 'https://script.google.com/macros/s/echo?user_content_key=AUkAhnSD5OtfJKAeBcZ9hyiHY9RaWQ0jR5MfxS29nKNFWHXsCHu1vcWXOlaeUInM3hOPtdAfT8lonuHzbjDl4OatR32CSQFhsfmDdiW0q5YreNlR5VFuokI3FNphXF12Jj7w27kx4-ZSL5rYfDtsn3xQhKmeHl8qSHFsD_thxiG8YwezLej8s_-Ez-lyILOQrhY8xK7iMblu4fz559ncg9wtfsV_6UD1u5Wt0wq60m1F3nEFafo6-f603OTQSLkhubYOq5W3LtXwemy4RVtG4yg&lib=MoTW1Rg4YJIxNQ6mIMSSLI2Q3z3sxqU2QА/exec';
+
 const BONUS = { win: 1000, bright: 500 };
 const PLAYOFF_SIZE = 12;
 const GAME_TIME = '12:30';
@@ -443,38 +443,15 @@ function normStatus(raw, start) {
   return start && start.getTime() < Date.now() ? 'done' : 'planned';
 }
 
-/* ================== ЗАГРУЗКА ИЗ ТАБЛИЦЫ ================== */
-function gvizUrl(sheet) {
-  return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheet)}`;
-}
+/* ================== ЗАГРУЗКА ИЗ GOOGLE APPS SCRIPT ================== */
 
-/* Google возвращает JSON, обёрнутый в вызов функции — вырезаем его */
-async function fetchSheet(sheet) {
-  const res = await fetch(gvizUrl(sheet), { cache:'no-store' });
-  if (!res.ok) throw new Error(`Лист «${sheet}»: HTTP ${res.status}`);
-  const text = await res.text();
-  const start = text.indexOf('{'), end = text.lastIndexOf('}');
-  if (start < 0 || end < 0) throw new Error(`Лист «${sheet}»: неожиданный ответ`);
-  const json = JSON.parse(text.slice(start, end + 1));
-  if (json.status === 'error') {
-    throw new Error(`Лист «${sheet}»: ` + (json.errors?.[0]?.detailed_message || 'ошибка доступа').replace(/<[^>]+>/g, ''));
+/* Ищем значение в строке по нескольким возможным названиям колонки */
+function pick(row, names) {
+  for (const key in row) {
+    const k = key.trim().toLowerCase();
+    if (names.includes(k)) return row[key];
   }
-  const cols = json.table.cols.map((c, i) => (c.label || c.id || 'col' + i).trim());
-  const cell = c => {
-    if (!c) return '';
-    if (c.f != null && String(c.f).trim() !== '') return String(c.f).trim();
-    if (c.v == null) return '';
-    if (typeof c.v === 'string' && /^Date\((\d+),(\d+),(\d+)/.test(c.v)) {
-      const m = c.v.match(/^Date\((\d+),(\d+),(\d+)/);
-      return `${m[3].padStart(2,'0')}.${String(+m[2] + 1).padStart(2,'0')}.${m[1]}`;
-    }
-    return String(c.v).trim();
-  };
-  return json.table.rows.map(r => {
-    const obj = {};
-    cols.forEach((name, i) => obj[name] = cell(r.c?.[i]));
-    return obj;
-  });
+  return '';
 }
 
 function parseGames(rows) {
@@ -523,7 +500,6 @@ function parsePlayers(rows) {
   })).filter(p => p.name);
 }
 
-/* Если лист Players пуст — собираем игроков из результатов игр */
 function playersFromGames() {
   const seen = new Map();
   GAMES.forEach(g => g.players.forEach(p => { if (!seen.has(p.name)) seen.set(p.name, { name:p.name, city:'', dept:'' }); }));
@@ -531,18 +507,36 @@ function playersFromGames() {
 }
 
 async function loadAll() {
-  const bar = document.getElementById('loadBar'), txt = document.getElementById('loadText');
+  const bar = document.getElementById('loadBar');
   bar.className = 'load-bar';
   bar.innerHTML = '<span class="spinner"></span><span id="loadText">Загружаю данные из Google-таблицы…</span>';
+  
   try {
-    const [gRows, pRows] = await Promise.all([fetchSheet(SHEET_GAMES), fetchSheet(SHEET_PLAYERS).catch(() => [])]);
+    if (SCRIPT_URL.includes('ВАШ_ДЛИННЫЙ_ID')) {
+      throw new Error('Необходимо вставить реальный URL веб-приложения в переменную SCRIPT_URL в начале кода');
+    }
+
+    const [gRes, pRes] = await Promise.all([
+      fetch(SCRIPT_URL + '?sheet=Games'),
+      fetch(SCRIPT_URL + '?sheet=Players')
+    ]);
+
+    if (!gRes.ok || !pRes.ok) throw new Error('Ошибка сети при загрузке данных');
+
+    const gRows = await gRes.json();
+    const pRows = await pRes.json();
+
+    if (!Array.isArray(gRows) || !Array.isArray(pRows)) throw new Error('Неверный формат ответа от скрипта');
+
     GAMES = parseGames(gRows);
     PLAYERS = parsePlayers(pRows);
+    
     if (!PLAYERS.length) PLAYERS = playersFromGames();
     else {
       const known = new Set(PLAYERS.map(p => p.name));
       playersFromGames().forEach(p => { if (!known.has(p.name)) PLAYERS.push(p); });
     }
+    
     render();
     const now = new Date().toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit' });
     document.getElementById('loadBar').innerHTML =
@@ -552,9 +546,9 @@ async function loadAll() {
     console.error(e);
     document.getElementById('loadBar').className = 'load-bar error';
     document.getElementById('loadBar').innerHTML =
-      `<span>⚠️ Не удалось загрузить таблицу: ${esc(e.message)}. Проверьте, что доступ по ссылке открыт («Читатель») и листы названы ${SHEET_GAMES} и ${SHEET_PLAYERS}.</span>
+      `<span>⚠️ Не удалось загрузить таблицу: ${esc(e.message)}.</span>
        <button class="reload-btn" onclick="loadAll()">Повторить</button>`;
-    render();
+    render(); // Показываем локальные данные при ошибке
   }
 }
 
