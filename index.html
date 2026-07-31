@@ -479,26 +479,106 @@ const STATUS_MAP = {
   moved:   { cls:'moved',   label:'Перенесена' }
 };
 
-/* ================== УТИЛИТЫ ================== */
-const fmt = n => Number(n).toLocaleString('ru-RU');
-const bonusOf = p => (p.win ? BONUS.win : 0) + (p.bright ? BONUS.bright : 0);
-const plural = (n, f) => {
-  const a = n % 10, b = n % 100;
-  if (a === 1 && b !== 11) return f[0];
-  if (a >= 2 && a <= 4 && (b < 10 || b >= 20)) return f[1];
-  return f[2];
-};
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const yes = v => ['да','yes','true','1','+','x','х','✓','v','победа'].includes(String(v ?? '').trim().toLowerCase());
-
+/* ================== УТИЛИТЫ ДАТЫ И ВРЕМЕНИ (ЖЁСТКАЯ ПРИВЯЗКА К МСК, UTC+3) ================== */
 const MONTHS = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
 
-function pick(row, names) {
-  for (const key in row) {
-    const k = key.trim().toLowerCase();
-    if (names.includes(k)) return row[key];
+function extractTime(str) {
+  if (!str) return null;
+  const s = String(str);
+  // Ищем время в формате ЧЧ:ММ или ЧЧ.ММ
+  let m = s.match(/[\s,T](\d{1,2})[:.](\d{2})(?:[:.]\d{2})?/) || s.match(/(\d{1,2})[:.](\d{2})(?:[:.]\d{2})?/);
+  if (m) {
+    const h = parseInt(m[1], 10);
+    const min = parseInt(m[2], 10);
+    if (h >= 0 && h <= 23 && min >= 0 && min <= 59) return { hours: h, minutes: min };
   }
-  return '';
+  return null;
+}
+
+function parseMoscowDate(raw) {
+  const s = String(raw ?? '').trim();
+  if (!s) return null;
+
+  let year, month, day, hours = 12, minutes = 30; // Дефолт: 12:30 МСК
+
+  // 1. Если Google прислал ISO-строку с Z (UTC), конвертируем её компоненты в МСК (UTC+3)
+  if (s.includes('T') && s.includes('Z')) {
+    const d = new Date(s);
+    if (!isNaN(d)) {
+      const mskDate = new Date(d.getTime() + (3 * 60 * 60 * 1000)); // Сдвиг на +3 часа
+      year = mskDate.getUTCFullYear();
+      month = mskDate.getUTCMonth();
+      day = mskDate.getUTCDate();
+      hours = mskDate.getUTCHours();
+      minutes = mskDate.getUTCMinutes();
+      return new Date(Date.UTC(year, month, day, hours, minutes));
+    }
+  }
+
+  // 2. Формат ДД.ММ.ГГГГ или ДД.ММ.ГГГГ ЧЧ:ММ
+  let m = s.match(/^(\d{1,2})[.\/](\d{1,2})[.\/](\d{4})(?:\s+(\d{1,2})[:.](\d{2}))?/);
+  if (m) {
+    day = parseInt(m[1], 10);
+    month = parseInt(m[2], 10) - 1;
+    year = parseInt(m[3], 10);
+    if (m[4]) hours = parseInt(m[4], 10);
+    if (m[5]) minutes = parseInt(m[5], 10);
+    return new Date(Date.UTC(year, month, day, hours, minutes));
+  }
+
+  // 3. Формат ГГГГ-ММ-ДД ЧЧ:ММ (без Z, считаем, что это уже МСК)
+  m = s.match(/^(\d{4})-(\d{2})-(\d{2})(?:\s+(\d{1,2})[:.](\d{2}))?/);
+  if (m) {
+    year = parseInt(m[1], 10);
+    month = parseInt(m[2], 10) - 1;
+    day = parseInt(m[3], 10);
+    if (m[4]) hours = parseInt(m[4], 10);
+    if (m[5]) minutes = parseInt(m[5], 10);
+    return new Date(Date.UTC(year, month, day, hours, minutes));
+  }
+
+  // 4. Формат "25 октября 2024"
+  m = s.toLowerCase().match(/^(\d{1,2})\s+([а-яё]+)\s+(\d{4})/);
+  if (m) {
+    day = parseInt(m[1], 10);
+    const idx = MONTHS.findIndex(mo => mo.startsWith(m[2].slice(0, 4)));
+    if (idx >= 0) {
+      year = parseInt(m[3], 10);
+      month = idx;
+      return new Date(Date.UTC(year, month, day, hours, minutes));
+    }
+  }
+
+  return null;
+}
+
+function dateText(raw) {
+  const d = parseMoscowDate(raw);
+  if (!d) return String(raw ?? 'Дата уточняется');
+  // МАГИЯ ЗДЕСЬ: используем getUTC*, чтобы получить день/месяц/год 
+  // НЕЗАВИСИМО от часового пояса браузера пользователя
+  return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+}
+
+function gameStart(g) {
+  // Базовая дата и время из dateRaw (функция уже вернула нам абсолютное время для МСК)
+  let d = parseMoscowDate(g.dateRaw);
+  
+  // Если время указано в отдельной колонке, обновляем его, сохраняя привязку к МСК
+  if (d && g.time) {
+    const timeInfo = extractTime(g.time);
+    if (timeInfo) {
+      d = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), timeInfo.hours, timeInfo.minutes));
+    }
+  }
+  
+  // Фоллбэк: если дата вообще не распарсилась, ставим сегодня 12:30 МСК
+  if (!d) {
+    const now = new Date();
+    d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 12, 30));
+  }
+  
+  return d;
 }
 
 /* ===== НОВАЯ ФУНКЦИЯ: извлечение времени из любой строки ===== */
